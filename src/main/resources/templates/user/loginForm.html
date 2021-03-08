@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/common :: head('헬스프링쿠트')"></div>
+
+<body>
+
+<div th:replace="fragments/common :: menu('home')"></div>
+<div class="container col-md-6 center-block">
+    <form action="/login" method="POST">
+        <div class="form-group">
+            <label for="username">ID</label>
+            <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password">
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div>
+        <button value="submit" class="btn btn-primary">로그인</button>
+      </form>
+      <!--<button value="submit" id="btn_login" class="btn btn-primary" >로그인</button>-->
+    <div class="text-right">
+        <a type="button" class="btn btn-primary" href="/oauth2/authorization/google">구글 로그인</a>
+        <a type="button" class="btn btn-primary"th:href="@{/auth/user/joinForm}">회원가입</a>
+    </div>
+</div>
+<!-- /.container -->
+
+
+<div th:replace="fragments/common :: script"></div>
+</body>
+</html>

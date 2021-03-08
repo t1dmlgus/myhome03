@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/common :: head('헬스프링쿠트')"></div>
+
+    <body>
+
+        <div th:replace="fragments/common :: menu('home')"></div>
+        <main role="main" class="container">
+
+            <div class="starter-template">
+                <h1>스프링 부트 튜토리얼02</h1>
+                <p>스프링 부트를 이용해 웹 페이지 제작
+                Spring Security, JPA를 이용해 보안 설정과 데이터 다루기</p>
+            </div>
+
+        </main>
+        <!-- /.container -->
+
+
+        <div th:replace="fragments/common :: script"></div>
+    </body>
+</html>
