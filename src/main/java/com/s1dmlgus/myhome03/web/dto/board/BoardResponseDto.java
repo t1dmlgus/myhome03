@@ -27,6 +27,16 @@ public class BoardResponseDto {
 //    }
 
 
+    @Builder
+    public BoardResponseDto(Board board) {
+        this.boardId = board.getId();
+        this.boardTitle = board.getTitle();
+        this.boardContent = board.getContent();
+        this.MemberId = board.getMember().getId();
+        this.MemberName = board.getMember().getUsername();
+    }
+
+
     @QueryProjection
     public BoardResponseDto(Long boardId, String boardTitle, String boardContent, Long memberId, String memberName) {
         this.boardId = boardId;

@@ -9,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -32,7 +30,34 @@ public class BoardApiController {
     }
 
 
-    // 조회
+    // 수정
+    @PutMapping("/api/v1/board/{id}")   //PathVariable -> {id}
+    public ResponseDto<Integer> update(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto){
+
+        System.out.println("id = " + id);
+        System.out.println("boardRequestDto = " + boardRequestDto);
+        boardService.updateBoard(id,boardRequestDto);
+
+        System.out.println("업데이트 성공");
+
+
+        return new ResponseDto<>(HttpStatus.OK.value(), 1);
+
+
+    }
+
+    // 삭제
+    @DeleteMapping("/api/v1/board/{id}")
+    public ResponseDto<Integer> delete(@PathVariable Long id) {
+
+        boardService.deleteBoard(id);
+
+        return new ResponseDto<>(HttpStatus.OK.value(), 1);
+
+    }
+
+
+
 
 
 }

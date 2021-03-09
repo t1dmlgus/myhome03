@@ -24,7 +24,7 @@
                 <tbody>
                     <tr th:each="board : ${boards}">
                         <th th:text="${board.boardId}">1</th>
-                        <td th:text="${board.boardTitle}">Mark</td>
+                        <td><a th:href="@{/board/detail(id=${board.boardId})}" th:text="${board.boardTitle}">Mark</a></td>
                         <td th:text="${board.MemberName}">Otto</td>
                     </tr>
                 </tbody>

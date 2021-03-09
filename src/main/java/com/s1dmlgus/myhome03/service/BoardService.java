@@ -16,6 +16,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Log4j2
 @RequiredArgsConstructor
@@ -25,23 +27,25 @@ public class BoardService {
     private final BoardRepository boardRepository;
 
 
-    // 등록
+
+
+    // 전체 리스트 조회
     @Transactional
-    public void saveBoard(BoardRequestDto boardRequestDto, PrincipalDetails userDetails) {
+    public Page<BoardResponseDto> board_list(BoardSearchCondition condition, Pageable pageable) {
 
-        // 세션
-        System.out.println("userDetails = " + userDetails.getUser());
+        Page<BoardResponseDto> result = boardRepository.searchPage(condition, pageable);
 
-        Member user = userDetails.getUser();
-        Board board = boardRequestDto.toEntity(user);
+        for (BoardResponseDto boardResponseDto : result) {
+            System.out.println("boardResponseDto = " + boardResponseDto);
+        }
 
 
-        boardRepository.save(board);
-
+        return result;
 
     }
 
-//    // 전체 리스트 조회
+
+    //    // 전체 리스트 조회
 //    @Transactional
 //    public Page<BoardResponseDto> board_list(Pageable pageable){
 //
@@ -60,20 +64,67 @@ public class BoardService {
 //        return boardListDto;
 //    }
 
-    
 
-    // 전체 리스트 조회
+    // 게시물 조회
     @Transactional
-    public Page<BoardResponseDto> board_list(BoardSearchCondition condition, Pageable pageable) {
+    public BoardResponseDto findById(Long id) {
 
-        Page<BoardResponseDto> result = boardRepository.searchPage(condition, pageable);
+        Board board = boardRepository.findById(id).orElseThrow(() -> {
+            return new IllegalArgumentException("해당 게시물이 없습니다");
+        });
+        System.out.println("boardss = " + board);
 
-        for (BoardResponseDto boardResponseDto : result) {
-            System.out.println("boardResponseDto = " + boardResponseDto);
-        }
+        return new BoardResponseDto(board);
+
+    }
 
 
-        return result;
+    // 등록
+    @Transactional
+    public void saveBoard(BoardRequestDto boardRequestDto, PrincipalDetails userDetails) {
+
+        // 세션
+        System.out.println("userDetails = " + userDetails.getUser());
+
+        Member user = userDetails.getUser();
+        Board board = boardRequestDto.toEntity(user);
+
+
+        boardRepository.save(board);
+
+
+    }
+
+
+    // 수정
+    @Transactional
+    public void updateBoard(Long id, BoardRequestDto boardRequestDto) {
+
+        // BoardService findById 함수 활용
+        Board board = boardRepository.findById(id).orElseThrow(() -> {
+
+            return new IllegalArgumentException("해당 번호의 게시글은 업습니다");
+        });
+
+//        System.out.println("board = " + board);
+//        System.out.println("업데이트 비즈니스 로직 전");
+
+        // 비즈니스 로직[업데이트]
+        board.update(boardRequestDto.getTitle(), boardRequestDto.getContent());
+
         
+    }
+
+    // 삭제
+    public void deleteBoard(Long id) {
+
+        Board board = boardRepository.findById(id).orElseThrow(() -> {
+
+            return new IllegalArgumentException(" 해당 번호의 게시글이 없습니다.");
+        });
+
+        // 비즈니스 로직[삭제]
+        boardRepository.delete(board);
+
     }
 }

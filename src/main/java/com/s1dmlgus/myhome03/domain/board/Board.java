@@ -20,12 +20,12 @@ public class Board extends BaseTimeEntity{
     private Long id;
 
     private String title;
-
     private String content;
 
     @JoinColumn(name = "member_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
+
 
     @Builder
     public Board(String title, String content, Member member) {
@@ -33,4 +33,13 @@ public class Board extends BaseTimeEntity{
         this.content = content;
         this.member = member;
     }
+
+
+    // 업데이트 로직
+    public void update(String title, String content){
+
+        this.title = title;
+        this.content = content;
+    }
+
 }
