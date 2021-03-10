@@ -33,6 +33,25 @@
                 <a type="button" class="btn btn-primary"th:href="@{/board/save}">글쓰기</a>
             </div>
 
+
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${page.pageNumber} == 0? 'disabled'">
+                    <a class="page-link" th:href="@{/board/list?(page=${page.pageNumber-1})}"
+                        tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
+
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/board/list?(page=${page.pageNumber+1})}">Next</a>
+                </li>
+            </ul>
+
+
         </main>
         <!-- /.container -->
 

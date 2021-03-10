@@ -33,11 +33,14 @@ var main ={
             contentType:"application/json; charset=utf-8",
             data: JSON.stringify(data)
 
-        }).done(function(vvv){
+        }).done(function(kk){
 
-            alert('회원가입되었습니다!!')
-            alert(vvv);
-            location.href="/board/list"
+            if(kk.status == 200){
+                alert('회원가입되었습니다!!😉🤦‍♂️')
+                location.href="/board/list"
+            }else{
+                alert(kk.data.username) //kk.data.password ?
+            }
 
         }).fail(function(error){
 

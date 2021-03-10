@@ -26,8 +26,13 @@
                 <a class="nav-link" href="#" th:href="@{/board/list}">게시판</a>
             </li>
         </ul>
+
         <div th:if="${not #strings.isEmpty(user)}">
             <span style="color:#fff; padding: 0 50px 0" th:text="${user.username}">sdfd</span>
+            <a class="btn btn-outline-primary" th:href="@{/logout}">Sign out</a>
+        </div>
+        <div th:unless="${not #strings.isEmpty(user)}">
+            <a class="btn btn-outline-primary" th:href="@{/auth/user/loginForm}">Sign up</a>
         </div>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">

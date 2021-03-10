@@ -31,7 +31,6 @@ var main={
         console.log(data);
 
         $.ajax({
-
             type: 'POST',
             url: '/api/v1/board',
             dataType: 'json',
@@ -40,10 +39,15 @@ var main={
 
         }).done(function(vv){
 
-            alert("글이 등록되었습니01다");
-            alert(vv);
-            location.href = '/board/list';
+            alert(JSON.stringify(vv));
 
+            if(vv.status == 200){
+                alert("글이 등록되었습니01다");
+                location.href = '/board/list';
+            }else{
+
+                alert(vv.data)
+            }
 
         }).fail(function(error){
 

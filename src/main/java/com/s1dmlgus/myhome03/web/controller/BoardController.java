@@ -9,6 +9,8 @@ import com.s1dmlgus.myhome03.web.dto.board.BoardSearchCondition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -27,24 +29,30 @@ public class BoardController {
 
     // 게시물 전체 조회
     @GetMapping("/list")
-    public String list(Model model, BoardSearchCondition condition, Pageable pageable, @AuthenticationPrincipal PrincipalDetails userDetails){
+    public String list(Model model, BoardSearchCondition condition, @PageableDefault(size = 5, sort = "boardId", direction = Sort.Direction.ASC) Pageable pageable, @AuthenticationPrincipal PrincipalDetails userDetails){
 
+
+        // 세션
         try{
             Member user = userDetails.getUser();
-
             model.addAttribute("user", user);
 
         }catch (NullPointerException e){
-
             System.out.println("session_NullPointerException = " + e);
         }
 
         Page<BoardResponseDto> result = boardService.board_list(condition, pageable);
 
-        
-        model.addAttribute("boards", result);
+        System.out.println(result.getPageable());
+        System.out.println(result.getContent());
 
-        
+        Pageable page = result.getPageable();
+
+
+        model.addAttribute("boards", result);
+        model.addAttribute("page", page);
+
+
         return "board/list";
     }
 
