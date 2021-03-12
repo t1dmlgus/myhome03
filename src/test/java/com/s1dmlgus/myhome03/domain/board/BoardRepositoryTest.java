@@ -53,8 +53,8 @@ class BoardRepositoryTest {
 //        member02 = new Member("member02", 30);
 //        member03 = new Member("member03", 40);
 
-        em.persist(member01);
-        em.persist(member02);
+//        em.persist(member01);
+//        em.persist(member02);
         //em.persist(member03);
 
 
@@ -111,4 +111,20 @@ class BoardRepositoryTest {
 
 
     }
+
+    @Test
+    public void 게시물find(){
+
+        List<Board> all = boardRepository.findAll();
+
+        for (Board board : all) {
+            System.out.println("board = " + board);
+
+        }
+
+
+
+
+    }
+
 }

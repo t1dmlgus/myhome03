@@ -3,6 +3,7 @@ package com.s1dmlgus.myhome03.domain.user;
 
 import com.s1dmlgus.myhome03.domain.BaseTimeEntity;
 import com.s1dmlgus.myhome03.domain.board.Board;
+import com.s1dmlgus.myhome03.domain.reply.Reply;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,14 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@ToString(of={"id", "username", "password","role","age","email"})
+@ToString(of = {"id", "username", "password", "role", "age", "email"})
 @Getter
 @NoArgsConstructor
 @Entity
 public class Member extends BaseTimeEntity {
 
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "member_id")
     private Long id;
     private String username;
@@ -39,7 +41,15 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member")
     List<Board> boards = new ArrayList<>();
 
+
+    @OneToMany(mappedBy = "member")
+    List<Reply> replies = new ArrayList<>();
+
+
+
+
     @Builder
+
     public Member(String username, String password, String email, Role role, int age, String provider, String providerId) {
         this.username = username;
         this.password = password;
@@ -52,16 +62,17 @@ public class Member extends BaseTimeEntity {
     }
 
     // 비밀번호 암호화
-    public void encodePassword(String encPassword){
+    public void encodePassword(String encPassword) {
         this.password = encPassword;
     }
 
     // 기본 권한설정
-    public void setRole(Role role){
+    public void setRole(Role role) {
         this.role = role;
     }
+
     // 기본 provider 설정
-    public void setProvider(String provider){
+    public void setProvider(String provider) {
         this.provider = provider;
     }
 

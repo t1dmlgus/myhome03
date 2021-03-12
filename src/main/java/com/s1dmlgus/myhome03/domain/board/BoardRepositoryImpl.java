@@ -5,7 +5,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.s1dmlgus.myhome03.web.dto.board.BoardResponseDto;
 import com.s1dmlgus.myhome03.web.dto.board.BoardSearchCondition;
-import com.s1dmlgus.myhome03.web.dto.QBoardResponseDto;
+import com.s1dmlgus.myhome03.web.dto.board.QBoardResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -35,15 +35,17 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                         board.id.as("boardId"),
                         board.title.as("boardTitle"),
                         board.content.as("boardContent"),
+                        board.modifiedDate.as("boardDate"),
                         member.id.as("memberId"),
                         member.username.as("memberName")))
                 .from(board)
                 .leftJoin(board.member, member)
                 .where(
                         boardtitleEq(condition.getBoardTitle()),
-                        usernameEq(condition.getUsername()),
-                        boardcontent(condition.getBoardContent())
-                )
+                        boardcontent(condition.getBoardContent()),
+                        usernameEq(condition.getUsername())
+                        )
+                .orderBy(board.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
@@ -58,6 +60,11 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
     }
 
+    private BooleanExpression boardtitleEq(String boardTitle) {
+        return hasText(boardTitle) ? board.title.eq(boardTitle) : null;
+
+    }
+
     private BooleanExpression boardcontent(String content) {
 
         return hasText(content) ? board.content.eq(content) : null;
@@ -65,10 +72,5 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
     private BooleanExpression usernameEq(String username) {
         return hasText(username) ? member.username.eq(username) : null;
-    }
-
-    private BooleanExpression boardtitleEq(String boardTitle) {
-        return hasText(boardTitle) ? board.title.eq(boardTitle) : null;
-
     }
 }

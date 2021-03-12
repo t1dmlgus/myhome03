@@ -19,13 +19,15 @@
                         <th scope="col">#</th>
                         <th scope="col">제목</th>
                         <th scope="col">작성자</th>
+                        <th scope="col">작성날짜</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="board : ${boards}">
-                        <th th:text="${board.boardId}">1</th>
+                        <td th:text="${board.boardId}"></td>
                         <td><a th:href="@{/board/detail(id=${board.boardId})}" th:text="${board.boardTitle}">Mark</a></td>
                         <td th:text="${board.MemberName}">Otto</td>
+                        <td th:text="${#temporals.format(board.boardDate,'yyyy-MM-dd HH:mm')} ">Otto</td>
                     </tr>
                 </tbody>
             </table>
@@ -35,19 +37,17 @@
 
 
             <ul class="pagination justify-content-center">
-                <li class="page-item" th:classappend="${page.pageNumber} == 0? 'disabled'">
-                    <a class="page-link" th:href="@{/board/list?(page=${page.pageNumber-1})}"
-                        tabindex="-1" aria-disabled="true">Previous</a>
+                <li class="page-item" th:if="${prev}">
+                    <a class="page-link" th:href="@{/board/list?(page=${start -1})}" tabindex="-1" aria-disabled="true">Previous</a>
                 </li>
 
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item active" aria-current="page">
-                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
 
-                <li class="page-item">
-                    <a class="page-link" th:href="@{/board/list?(page=${page.pageNumber+1})}">Next</a>
+                <li class="page-item active" aria-current="page" th:each="page : ${pageList}">
+                    <a class="page-link" th:href="@{/board/list(page=${page})}">[[${page}]]<span class="sr-only"></span></a>
+                </li>
+
+                <li class="page-item" th:if="${next}">
+                    <a class="page-link"  th:href="@{/board/list?(page=${end+1})}">Next</a>
                 </li>
             </ul>
 

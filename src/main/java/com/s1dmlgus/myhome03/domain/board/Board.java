@@ -1,6 +1,7 @@
 package com.s1dmlgus.myhome03.domain.board;
 
 import com.s1dmlgus.myhome03.domain.BaseTimeEntity;
+import com.s1dmlgus.myhome03.domain.reply.Reply;
 import com.s1dmlgus.myhome03.domain.user.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,8 +9,10 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@ToString
+@ToString(of = {"id","title","content","member"})
 @Getter
 @NoArgsConstructor
 @Entity
@@ -27,12 +30,17 @@ public class Board extends BaseTimeEntity{
     private Member member;
 
 
+
+    @OneToMany(mappedBy = "board")
+    List<Reply> replies = new ArrayList<>();
+
     @Builder
     public Board(String title, String content, Member member) {
         this.title = title;
         this.content = content;
         this.member = member;
     }
+
 
 
     // 업데이트 로직

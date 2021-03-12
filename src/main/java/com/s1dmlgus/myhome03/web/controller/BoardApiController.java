@@ -3,8 +3,10 @@ package com.s1dmlgus.myhome03.web.controller;
 
 import com.s1dmlgus.myhome03.config.auth.PrincipalDetails;
 import com.s1dmlgus.myhome03.service.BoardService;
+import com.s1dmlgus.myhome03.service.ReplyService;
 import com.s1dmlgus.myhome03.web.dto.ResponseDto;
 import com.s1dmlgus.myhome03.web.dto.board.BoardRequestDto;
+import com.s1dmlgus.myhome03.web.dto.reply.ReplyRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -21,7 +23,7 @@ import javax.validation.Valid;
 public class BoardApiController {
 
     private final BoardService boardService;
-
+//    private final ReplyService replyService;
 
 
     // 등록
@@ -67,6 +69,26 @@ public class BoardApiController {
 
     }
 
+    
+    // 댓글 등록
+    @PostMapping("/api/v1/board/{id}/reply")
+    public ResponseDto<Integer> save(@PathVariable Long id, @Valid @RequestBody ReplyRequestDto replyRequestDto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails userDetails) {
+
+        log.info("--------------------------gggdg----------------");
+
+
+        System.out.println("replyRequestDto.getContent() = " + replyRequestDto.getContent());
+        System.out.println("id"+ id);
+
+        /* 핵심기능 */
+
+        boardService.saveReply(id, replyRequestDto, userDetails);
+
+
+        log.info("--------------------------11111g----------------");
+
+        return new ResponseDto<>(HttpStatus.OK.value(),1);
+    }
 
 
 

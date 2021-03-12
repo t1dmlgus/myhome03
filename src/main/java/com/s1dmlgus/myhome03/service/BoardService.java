@@ -3,10 +3,13 @@ package com.s1dmlgus.myhome03.service;
 import com.s1dmlgus.myhome03.config.auth.PrincipalDetails;
 import com.s1dmlgus.myhome03.domain.board.Board;
 import com.s1dmlgus.myhome03.domain.board.BoardRepository;
+import com.s1dmlgus.myhome03.domain.reply.Reply;
+import com.s1dmlgus.myhome03.domain.reply.ReplyRepository;
 import com.s1dmlgus.myhome03.domain.user.Member;
 import com.s1dmlgus.myhome03.web.dto.board.BoardRequestDto;
 import com.s1dmlgus.myhome03.web.dto.board.BoardResponseDto;
 import com.s1dmlgus.myhome03.web.dto.board.BoardSearchCondition;
+import com.s1dmlgus.myhome03.web.dto.reply.ReplyRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -25,7 +28,7 @@ import java.util.Optional;
 public class BoardService {
 
     private final BoardRepository boardRepository;
-
+    private final ReplyRepository replyRepository;
 
 
 
@@ -127,4 +130,26 @@ public class BoardService {
         boardRepository.delete(board);
 
     }
+
+
+    // 댓글 등록
+    @Transactional
+    public void saveReply(Long id, ReplyRequestDto replyRequestDto, PrincipalDetails userDetails){
+
+
+        //세션 유저
+        Member user = userDetails.getUser();
+        Board board = boardRepository.findById(id).orElseThrow(() -> {
+
+            return new IllegalArgumentException("해당 번호의 게시물이 없스빈다");
+        });
+
+        Reply reply = replyRequestDto.toEntity(board, user);
+
+        Reply save = replyRepository.save(reply);
+
+
+    }
+
+
 }

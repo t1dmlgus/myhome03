@@ -25,7 +25,26 @@
     <a href="/" role="button" class="btn btn-secondary">취소</a>
     <button id="btn_update" class="btn btn-primary">수정</button>
     <button id="btn_delete" class="btn btn-primary">삭제</button>
-</main><!-- /.container -->
+
+    <div class="card">
+        <div class="card-body"><textarea class="form-control" rows="1"></textarea></div>
+        <div class="card-footer">
+            <button class="btn btn-primary">등록</button>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">댓글리스트</div>
+        <ul class="list-group">
+            <li class="list-group-item">FirstItem</li>
+            <li class="list-group-item">FirstItem</li>
+            <li class="list-group-item">FirstItem</li>
+            <li class="list-group-item">FirstItem</li>
+        </ul>
+    </div>
+
+
+</main>
+<!-- /.container -->
 
 <div th:replace="fragments/common :: script"></div>
 

@@ -13,8 +13,12 @@ var main={
         $("#btn_delete").on('click',()=>{
             this.delete();
 
-        })
+        }),
+        $("#reply_save").on('click',()=>{
+            this.replySave();
 
+
+        })
 
 
     },
@@ -118,7 +122,48 @@ var main={
 
          })
 
-    }
+    },
+    replySave: function(){
+
+                var data = {
+
+                    boardId : $('#id').val(),
+                    content : $('#reply_content').val()
+
+                };
+
+
+
+               alert(content);
+
+                console.log(content);
+
+               $.ajax({
+
+                  type: 'POST',
+                  url:'/api/v1/board/'+data.boardId+'/reply',
+                  dataType: 'json',
+                  contentType: 'application/json; charset=utf-8',
+                  data: JSON.stringify(data)
+
+
+               }).done(function(aa){
+
+                  alert('댓글이 등록되었습니다');
+
+                  location.href ='/board/detail?id='+data.boardId;
+
+               }).fail(function(error){
+
+                  alert(JSON.stringify(error));
+                  alert('댓글 등록 에러');
+
+               })
+
+          }
+
+
+
 
 
 }

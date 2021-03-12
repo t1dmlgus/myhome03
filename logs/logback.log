@@ -1,2 +1,1 @@
-[2021-03-11 00:15:01:485293][http-nio-8080-exec-1] WARN  c.s.m.config.aop.BindingAdvice - com.s1dmlgus.myhome03.web.controller.BoardApiController.save() -> 필드: title, 메시지 : 게시글 제목이 없습니다.
-[2021-03-11 00:15:39:523788][http-nio-8080-exec-6] WARN  c.s.m.config.aop.BindingAdvice - com.s1dmlgus.myhome03.web.controller.BoardApiController.save() -> 필드: content, 메시지 : 게시글 내용이 없습니다.
+[2021-03-13 02:39:51:39713][http-nio-8080-exec-9] WARN  c.s.m.config.aop.BindingAdvice - com.s1dmlgus.myhome03.web.controller.BoardApiController.save() -> 필드: content, 메시지 : 댓글이 작성되지 않았습니다.

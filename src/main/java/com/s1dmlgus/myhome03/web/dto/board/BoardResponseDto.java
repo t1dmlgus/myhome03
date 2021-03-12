@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @NoArgsConstructor
 @Data
 public class BoardResponseDto {
@@ -15,6 +18,7 @@ public class BoardResponseDto {
     private Long boardId;
     private String boardTitle;
     private String boardContent;
+    private LocalDateTime boardDate;
     private Long MemberId;
     private String MemberName;
 
@@ -38,10 +42,11 @@ public class BoardResponseDto {
 
 
     @QueryProjection
-    public BoardResponseDto(Long boardId, String boardTitle, String boardContent, Long memberId, String memberName) {
+    public BoardResponseDto(Long boardId, String boardTitle, String boardContent,LocalDateTime boardDate, Long memberId, String memberName) {
         this.boardId = boardId;
         this.boardTitle = boardTitle;
         this.boardContent = boardContent;
+        this.boardDate = boardDate;
         MemberId = memberId;
         MemberName = memberName;
     }

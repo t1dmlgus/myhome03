@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 @RequiredArgsConstructor
 @RequestMapping("/board")
 @Controller
@@ -29,7 +33,7 @@ public class BoardController {
 
     // 게시물 전체 조회
     @GetMapping("/list")
-    public String list(Model model, BoardSearchCondition condition, @PageableDefault(size = 5, sort = "boardId", direction = Sort.Direction.ASC) Pageable pageable, @AuthenticationPrincipal PrincipalDetails userDetails){
+    public String list(Model model, BoardSearchCondition condition, @PageableDefault(size = 10, sort = "boardId", direction = Sort.Direction.DESC) Pageable pageable, @AuthenticationPrincipal PrincipalDetails userDetails){
 
 
         // 세션
@@ -41,18 +45,44 @@ public class BoardController {
             System.out.println("session_NullPointerException = " + e);
         }
 
+
         Page<BoardResponseDto> result = boardService.board_list(condition, pageable);
 
         System.out.println(result.getPageable());
         System.out.println(result.getContent());
 
-        Pageable page = result.getPageable();
+
+        System.out.println(result.getSort());
+
+        // 현재 페이지
+        int page = result.getPageable().getPageNumber() + 1;
+        
+        // 총 페이지 수(= 61)
+        int totalPages = result.getTotalPages();
+
+        //<td th:each="i : ${#numbers.sequence(1, 61)}">[[${i}]]</td>
+
+        int tempEnd = (int) (Math.ceil(page / 10.0)) * 10;
+        int start = tempEnd - 9;
+        int end = totalPages > tempEnd ? tempEnd : totalPages;
+
+        boolean prev = start > 1;
+        boolean next = totalPages > tempEnd;
+
+        List<Integer> pageList = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
+        System.out.println("pageList = " + pageList);
 
 
         model.addAttribute("boards", result);
-        model.addAttribute("page", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("pageList", pageList);
+        model.addAttribute("start", start);
+        model.addAttribute("end", end);
+        model.addAttribute("prev", prev);
+        model.addAttribute("next", next);
 
 
+        
         return "board/list";
     }
 
