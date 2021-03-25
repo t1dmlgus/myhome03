@@ -1,4 +1,4 @@
-var main ={
+var login ={
 
     init: function(){
 
@@ -94,5 +94,5 @@ var main ={
 
 }
 
-main.init();
+login.init();
 

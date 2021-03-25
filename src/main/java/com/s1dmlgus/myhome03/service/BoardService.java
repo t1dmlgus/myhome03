@@ -17,8 +17,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+
+import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -28,8 +30,9 @@ import java.util.Optional;
 public class BoardService {
 
     private final BoardRepository boardRepository;
-    private final ReplyRepository replyRepository;
 
+    private final ReplyService replyService;
+    private final LikesService likesService;
 
 
     // 전체 리스트 조회
@@ -119,10 +122,16 @@ public class BoardService {
     }
 
     // 삭제
-    public void deleteBoard(Long id) {
+    public void deleteBoard(Long boardId) {
 
-        Board board = boardRepository.findById(id).orElseThrow(() -> {
+        log.info("[boardApiController] boardService.deleteBoard 호출 --------------------------------------");
+        // 댓글 선 삭제
+        replyService.deleteReplies(boardId);
 
+        // 좋아요 선 삭제
+        likesService.deleteBoardLikes(boardId);
+
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> {
             return new IllegalArgumentException(" 해당 번호의 게시글이 없습니다.");
         });
 
@@ -131,25 +140,6 @@ public class BoardService {
 
     }
 
-
-    // 댓글 등록
-    @Transactional
-    public void saveReply(Long id, ReplyRequestDto replyRequestDto, PrincipalDetails userDetails){
-
-
-        //세션 유저
-        Member user = userDetails.getUser();
-        Board board = boardRepository.findById(id).orElseThrow(() -> {
-
-            return new IllegalArgumentException("해당 번호의 게시물이 없스빈다");
-        });
-
-        Reply reply = replyRequestDto.toEntity(board, user);
-
-        Reply save = replyRepository.save(reply);
-
-
-    }
 
 
 }

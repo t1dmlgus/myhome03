@@ -1,6 +1,7 @@
 package com.s1dmlgus.myhome03.domain.board;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.s1dmlgus.myhome03.domain.reply.Reply;
 import com.s1dmlgus.myhome03.domain.user.Member;
 import com.s1dmlgus.myhome03.web.dto.board.BoardResponseDto;
 import com.s1dmlgus.myhome03.web.dto.board.BoardSearchCondition;
@@ -120,11 +121,17 @@ class BoardRepositoryTest {
         for (Board board : all) {
             System.out.println("board = " + board);
 
+            Member member = board.getMember();
+            System.out.println("member = " + member);
+
         }
 
 
 
 
     }
+
+
+
 
 }

@@ -1,4 +1,4 @@
-package com.s1dmlgus.myhome03.domain.reply;
+package com.s1dmlgus.myhome03.domain.like;
 
 import com.s1dmlgus.myhome03.domain.BaseTimeEntity;
 import com.s1dmlgus.myhome03.domain.board.Board;
@@ -10,17 +10,17 @@ import lombok.ToString;
 
 import javax.persistence.*;
 
-@ToString(of = {"id", "content"})
+
+@ToString(of = {"id", "status"})
 @Getter
 @NoArgsConstructor
 @Entity
-public class Reply extends BaseTimeEntity {
+public class Likes extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "reply_id")
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String content;
+    private int status;      // 1: 좋아요, 0: default
 
 
     @JoinColumn(name = "board_id")
@@ -32,10 +32,14 @@ public class Reply extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
+
     @Builder
-    public Reply(String content, Board board, Member member) {
-        this.content = content;
+    public Likes(int status, Board board, Member member) {
+        this.status = status;
         this.board = board;
         this.member = member;
     }
+
+
+
 }

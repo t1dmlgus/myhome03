@@ -60,37 +60,15 @@ public class BoardApiController {
     }
 
     // 삭제
-    @DeleteMapping("/api/v1/board/{id}")
-    public ResponseDto<Integer> delete(@PathVariable Long id) {
+    @DeleteMapping("/api/v1/board/{boardId}")
+    public ResponseDto<Integer> delete(@PathVariable Long boardId) {
 
-        boardService.deleteBoard(id);
+        log.info("[boardApiController] boardService.deleteBoard 호출 --------------------------------------");
+        boardService.deleteBoard(boardId);
 
+        log.info("[boardApiController] boardService.deleteBoard 끝 --------------------------------------");
         return new ResponseDto<>(HttpStatus.OK.value(), 1);
 
     }
-
-    
-    // 댓글 등록
-    @PostMapping("/api/v1/board/{id}/reply")
-    public ResponseDto<Integer> save(@PathVariable Long id, @Valid @RequestBody ReplyRequestDto replyRequestDto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails userDetails) {
-
-        log.info("--------------------------gggdg----------------");
-
-
-        System.out.println("replyRequestDto.getContent() = " + replyRequestDto.getContent());
-        System.out.println("id"+ id);
-
-        /* 핵심기능 */
-
-        boardService.saveReply(id, replyRequestDto, userDetails);
-
-
-        log.info("--------------------------11111g----------------");
-
-        return new ResponseDto<>(HttpStatus.OK.value(),1);
-    }
-
-
-
 
 }

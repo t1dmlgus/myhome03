@@ -1,7 +1,10 @@
 <!doctype html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:if="http://www.w3.org/1999/xhtml">
 
 <div th:replace="fragments/common :: head('게시판폼')"></div>
+<style type="text/css">
+  .red { color: #f00; }
+</style>
 <body>
 
 
@@ -10,19 +13,45 @@
 <main class="container">
 
     <h2 class="starter-template">게시판</h2>
-    <form th:object="${board}" >
+    <form th:object="${board}">
 
-        <input type="hidden" id="id" th:field="*{boardId}">
+        <input type="hidden" id="boardId" th:field="*{boardId}">
         <div class="form-group">
-            <label for="title">제02목</label>
-            <input type="text" class="form-control" id="title" th:field="*{boardTitle}" readonly>
+            <label for="title">제02목</label>                                         <!-- 게시물 유저 == 세션 유저 -->
+            <input type="text" class="form-control" id="title" th:field="*{boardTitle}"  th:readonly="${!#strings.equals(user.username, board.memberName)}">
         </div>
         <div class="form-group">
             <label for="content">내02용지</label>
             <textarea class="form-control" id="content" rows="8" th:field="*{boardContent}" readonly></textarea>
         </div>
     </form>
-    <br/>
+    <!-- 현재 세션 == board 유저 -->
+
+    <div class="text-right" th:if="${#strings.equals(user.username, board.memberName)}">
+        <a href="/" role="button" class="btn btn-secondary">취소</a>
+        <button id="btn_update" class="btn btn-primary">수정</button>
+        <button id="btn_delete" class="btn btn-primary">삭제</button>
+
+    </div>
+
+    <!-- 현재 세션 번호 == like.유저번호 -->
+
+
+
+    <!--    <span>유저 아이디</span>-->
+    <!--    <div th:text="${user.id}"></div>-->
+
+    <!-- 좋아요 -->
+    <div class="">
+        <button id="btn-heart" class="btn btn-heart" type="hidden" th:value="${like.likeId}">
+            <div th:classappend="${like.status} == 1 ? 'xi-heart' : 'xi-heart-o'">
+            </div>
+        </button>
+        <!-- 좋아요 갯수 -->
+
+        <div id="likeCount" type="hidden" th:value="${like.count}" th:text="${like.count} >0 ? |좋아유 ${like.count}개|"></div>
+    </div>
+
     <div class="card">
         <div class="card-body">
             <textarea id="reply_content" class="form-control" rows="1"></textarea>
@@ -32,14 +61,23 @@
         </div>
     </div>
     <br/>
-    <div class="card">
+
+    <div class="card" style="margin: 50px 0">
         <div class="card-header">댓글리스트</div>
+
         <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between">
-                <div>댓글 내용입니다</div>
+            <li class="list-group-item d-flex justify-content-between" th:each="reply : ${reply}">
+
+                <input type="hidden" th:value="${reply.replyId}">
+                <input type="hidden" th:value="${reply.replyContent}">
+
+                <div th:text="${reply.replyContent}">댓글 내용입니다</div>
+
                 <div class="d-flex">
-                    <div class="font-italic">작성자: sts &nbsp;</div>
-                    <button class="badge">삭제</button>
+                    <div class="font-italic" th:text="${reply.memberName}"> 작성자: sts &nbsp;</div>
+                    <div th:if="${#strings.equals(user.username, reply.memberName)}">
+                        <button th:onclick="|reply.replyDelete( ${reply.replyId} )|" class="badge">삭제</button>
+                    </div>
                 </div>
             </li>
         </ul>

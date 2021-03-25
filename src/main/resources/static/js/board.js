@@ -1,4 +1,4 @@
-var main={
+var board={
 
     init: function(){
 
@@ -12,11 +12,6 @@ var main={
         }),
         $("#btn_delete").on('click',()=>{
             this.delete();
-
-        }),
-        $("#reply_save").on('click',()=>{
-            this.replySave();
-
 
         })
 
@@ -62,7 +57,7 @@ var main={
 
     update: function(){
 
-        var id = $('#id').val();
+        var id = $('#boardId').val();
 
         var data = {
 
@@ -98,16 +93,17 @@ var main={
     delete: function(){
 
 
-         var id = $('#id').val()
+         var boardId = $('#boardId').val();
 
-         alert(id);
+         console.log(boardId);
+
 
          $.ajax({
 
             type: 'DELETE',
-            url:'/api/v1/board/'+id,
+            url:'/api/v1/board/'+boardId,
             dataType: 'json',
-            contentType: 'application/json; charset=utf-8'
+
 
          }).done(function(aa){
 
@@ -122,50 +118,17 @@ var main={
 
          })
 
-    },
-    replySave: function(){
-
-                var data = {
-
-                    boardId : $('#id').val(),
-                    content : $('#reply_content').val()
-
-                };
-
-
-
-               alert(content);
-
-                console.log(content);
-
-               $.ajax({
-
-                  type: 'POST',
-                  url:'/api/v1/board/'+data.boardId+'/reply',
-                  dataType: 'json',
-                  contentType: 'application/json; charset=utf-8',
-                  data: JSON.stringify(data)
-
-
-               }).done(function(aa){
-
-                  alert('댓글이 등록되었습니다');
-
-                  location.href ='/board/detail?id='+data.boardId;
-
-               }).fail(function(error){
-
-                  alert(JSON.stringify(error));
-                  alert('댓글 등록 에러');
-
-               })
-
-          }
-
-
-
+    }
 
 
 }
 
-main.init();
+board.init();
+
+
+
+
+
+// $('#testbt').click(function() {
+//      $('#test').toggleClass('red');
+//   })

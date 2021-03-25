@@ -56,12 +56,13 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
         long total = results.getTotal();
 
 
+
         return new PageImpl<>(content, pageable, total);
 
     }
 
     private BooleanExpression boardtitleEq(String boardTitle) {
-        return hasText(boardTitle) ? board.title.eq(boardTitle) : null;
+        return hasText(boardTitle) ? board.title.contains(boardTitle) : null;
 
     }
 

@@ -1,1 +1,1 @@
-[2021-03-13 02:39:51:39713][http-nio-8080-exec-9] WARN  c.s.m.config.aop.BindingAdvice - com.s1dmlgus.myhome03.web.controller.BoardApiController.save() -> 필드: content, 메시지 : 댓글이 작성되지 않았습니다.
+[2021-03-20 15:22:02:684061][http-nio-8080-exec-2] WARN  c.s.m.config.aop.BindingAdvice - com.s1dmlgus.myhome03.api.ReplyApiController.save() -> 필드: content, 메시지 : 댓글은 20자 이하만 작성 가능합니드

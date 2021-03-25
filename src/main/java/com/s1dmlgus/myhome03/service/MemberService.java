@@ -5,10 +5,13 @@ import com.s1dmlgus.myhome03.domain.user.Member;
 import com.s1dmlgus.myhome03.domain.user.MemberRepository;
 import com.s1dmlgus.myhome03.domain.user.Role;
 import com.s1dmlgus.myhome03.web.dto.member.MemberRequestDto;
+import com.s1dmlgus.myhome03.web.dto.member.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -41,4 +44,15 @@ public class MemberService {
 
     }
 
+    // 유저 조회
+    @Transactional
+    public MemberResponseDto findById(Long id) {
+
+        Member findMember = memberRepositsory.findById(id).orElseThrow(() -> {
+
+            return new IllegalArgumentException("해당 멤바가 없습니다");
+        });
+
+        return new MemberResponseDto(findMember);
+    }
 }

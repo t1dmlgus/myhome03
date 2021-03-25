@@ -1,8 +1,8 @@
 package com.s1dmlgus.myhome03.domain.user;
 
-
 import com.s1dmlgus.myhome03.domain.BaseTimeEntity;
 import com.s1dmlgus.myhome03.domain.board.Board;
+import com.s1dmlgus.myhome03.domain.like.Likes;
 import com.s1dmlgus.myhome03.domain.reply.Reply;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,6 +46,8 @@ public class Member extends BaseTimeEntity {
     List<Reply> replies = new ArrayList<>();
 
 
+    @OneToMany(mappedBy = "member")
+    List<Likes> likes = new ArrayList<>();
 
 
     @Builder

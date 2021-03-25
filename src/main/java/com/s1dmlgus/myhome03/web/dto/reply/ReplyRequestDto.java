@@ -16,9 +16,12 @@ import javax.validation.constraints.Size;
 public class ReplyRequestDto {
 
 
+    private Long boardId;
+
     @NotBlank(message = "댓글이 작성되지 않았습니다.")
     @Size(max = 20, message = "댓글은 20자 이하만 작성 가능합니드")
     private String content;
+
 
 
     public Reply toEntity(Board board, Member member) {

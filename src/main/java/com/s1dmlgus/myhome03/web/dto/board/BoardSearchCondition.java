@@ -1,7 +1,11 @@
 package com.s1dmlgus.myhome03.web.dto.board;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class BoardSearchCondition {
     

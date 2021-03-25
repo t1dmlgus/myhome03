@@ -1,0 +1,13 @@
+.btn-heart{
+    border: none; background:#fff;
+
+}
+
+.xi-heart{
+    color:red;
+
+}
+
+#likeCount{
+    display: inline-block;
+}
