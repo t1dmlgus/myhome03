@@ -1,5 +1,6 @@
 package com.s1dmlgus.myhome03.domain.board;
 import com.s1dmlgus.myhome03.domain.BaseTimeEntity;
+import com.s1dmlgus.myhome03.domain.boardImage.BoardImage;
 import com.s1dmlgus.myhome03.domain.like.Likes;
 import com.s1dmlgus.myhome03.domain.reply.Reply;
 import com.s1dmlgus.myhome03.domain.user.Member;
@@ -37,6 +38,12 @@ public class Board extends BaseTimeEntity{
 
     @OneToMany(mappedBy = "board")
     List<Likes> likes = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "board")
+    List<BoardImage> boardImages = new ArrayList<>();
+
+
 
     @Builder
     public Board(String title, String content, Member member) {

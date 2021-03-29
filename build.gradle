@@ -41,6 +41,9 @@ dependencies {
 	//querydsl 추가
 	implementation 'com.querydsl:querydsl-jpa'
 
+	//thumbnail 추가
+	compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.12'
+
 }
 
 test {

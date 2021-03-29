@@ -2,6 +2,8 @@ package com.s1dmlgus.myhome03.web.dto.board;
 
 import com.s1dmlgus.myhome03.domain.board.Board;
 import com.s1dmlgus.myhome03.domain.user.Member;
+import com.s1dmlgus.myhome03.web.dto.boardImage.BoardImageDto;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,11 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class BoardRequestDto {
@@ -24,10 +30,18 @@ public class BoardRequestDto {
     private Member member;
 
 
+    // 게시판 이미지
+    @Builder.Default
+    private List<BoardImageDto> boardImageDtoList = new ArrayList<>();
+
+
+
     public BoardRequestDto(String title, String content) {
         this.title = title;
         this.content = content;
     }
+
+
 
     public Board toEntity(Member member){
 
@@ -38,5 +52,8 @@ public class BoardRequestDto {
                 .build();
 
     }
+
+
+
 
 }

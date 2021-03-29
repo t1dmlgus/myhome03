@@ -3,13 +3,17 @@ package com.s1dmlgus.myhome03.service;
 import com.s1dmlgus.myhome03.config.auth.PrincipalDetails;
 import com.s1dmlgus.myhome03.domain.board.Board;
 import com.s1dmlgus.myhome03.domain.board.BoardRepository;
+import com.s1dmlgus.myhome03.domain.boardImage.BoardImage;
+import com.s1dmlgus.myhome03.domain.boardImage.BoardImageRepository;
 import com.s1dmlgus.myhome03.domain.reply.Reply;
 import com.s1dmlgus.myhome03.domain.reply.ReplyRepository;
 import com.s1dmlgus.myhome03.domain.user.Member;
 import com.s1dmlgus.myhome03.web.dto.board.BoardRequestDto;
 import com.s1dmlgus.myhome03.web.dto.board.BoardResponseDto;
 import com.s1dmlgus.myhome03.web.dto.board.BoardSearchCondition;
+import com.s1dmlgus.myhome03.web.dto.boardImage.BoardImageDto;
 import com.s1dmlgus.myhome03.web.dto.reply.ReplyRequestDto;
+import com.s1dmlgus.myhome03.web.dto.upload.UploadResultDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -20,8 +24,10 @@ import org.springframework.stereotype.Service;
 
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Log4j2
@@ -30,6 +36,7 @@ import java.util.Optional;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final BoardImageRepository boardImageRepository;
 
     private final ReplyService replyService;
     private final LikesService likesService;
@@ -78,9 +85,25 @@ public class BoardService {
         Board board = boardRepository.findById(id).orElseThrow(() -> {
             return new IllegalArgumentException("해당 게시물이 없습니다");
         });
-        System.out.println("boardss = " + board);
 
-        return new BoardResponseDto(board);
+        log.info("board : " + board);
+
+        List<BoardImage> boardImages = boardImageRepository.findByBoardId(id);
+
+        List<UploadResultDto> uploadResultDtos = new ArrayList<>();
+
+        for (BoardImage boardImage : boardImages) {
+
+            log.info("boardImage : "+boardImage);
+
+        }
+
+        BoardResponseDto boardResponseDto = new BoardResponseDto(board, boardImages);
+
+        //log.info("boardResponseDto : "+boardResponseDto);
+
+
+        return boardResponseDto;
 
     }
 
@@ -89,15 +112,48 @@ public class BoardService {
     @Transactional
     public void saveBoard(BoardRequestDto boardRequestDto, PrincipalDetails userDetails) {
 
-        // 세션
+
         System.out.println("userDetails = " + userDetails.getUser());
 
+        // 세션
         Member user = userDetails.getUser();
+
+        // 게시물
         Board board = boardRequestDto.toEntity(user);
 
+        // 게시물 이미지
+        List<BoardImageDto> boardImageDtoList = boardRequestDto.getBoardImageDtoList();
 
+        
+        // boardImageDtoList null 과 사이즈 0이 아니라는 검증
+        if (boardImageDtoList != null && boardImageDtoList.size() > 0){
+
+            
+            // boardImageDtoList -> boardImageList 
+            List<BoardImage> boardImages = boardImageDtoList.stream().map(boardImageDto -> {
+
+                BoardImage boardImage = BoardImage.builder()
+                        .path(boardImageDto.getPath())
+                        .imgName(boardImageDto.getImgName())
+                        .uuid(boardImageDto.getUuid())
+                        .board(board)
+                        .build();
+
+                return boardImage;
+            }).collect(Collectors.toList());
+
+            
+            // board 이미지 저장
+            for (BoardImage boardImage : boardImages) {
+                System.out.println("boardImage = " + boardImage);
+                
+                boardImageRepository.save(boardImage);
+
+            }
+        }
+
+        // board 저장
         boardRepository.save(board);
-
 
     }
 

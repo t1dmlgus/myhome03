@@ -5,12 +5,17 @@ import com.s1dmlgus.myhome03.domain.like.Likes;
 import com.s1dmlgus.myhome03.domain.reply.Reply;
 import com.s1dmlgus.myhome03.domain.user.Member;
 import com.s1dmlgus.myhome03.domain.user.Role;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class MemberResponseDto {
@@ -24,7 +29,7 @@ public class MemberResponseDto {
     private List<Board> boards;
     private List<Reply> replies;
 
-
+    private String boardImg;
 
     private Long boardId;
     private String boardTitle;

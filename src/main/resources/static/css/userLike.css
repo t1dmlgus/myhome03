@@ -1,0 +1,25 @@
+.likeBoard{
+
+}
+
+.likeBoard ul{
+
+}
+
+.likeBoard ul li{
+    display: inline-block;
+    width: 24%;
+    padding: 1% 0 0 2%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.likeBoard ul li a{
+    display:block;
+
+}
+
+.likeBoard img{
+
+    width: 100%;
+}

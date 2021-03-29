@@ -35,14 +35,13 @@
                 <a type="button" class="btn btn-primary"th:href="@{/board/save}">글쓰기</a>
             </div>
 
-
             <ul class="pagination justify-content-center">
                 <li class="page-item" th:if="${prev}">
                     <a class="page-link" th:href="@{/board/list?(page=${start -1})}" tabindex="-1" aria-disabled="true">Previous</a>
                 </li>
 
 
-                <li class="page-item active" aria-current="page" th:each="page : ${pageList}">
+                <li class="page-item" aria-current="page" th:each="page : ${pageList}" th:classappend="${page == boards.pageable.pageNumber + 1} ? 'active'">
                     <a class="page-link" th:href="@{/board/list(page=${page})}">[[${page}]]<span class="sr-only"></span></a>
                 </li>
 

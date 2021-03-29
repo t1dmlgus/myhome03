@@ -3,7 +3,27 @@ var board={
     init: function(){
 
         $("#btn_save").on('click',()=>{
-            this.save();
+
+            var str = "";
+
+            $(".uploadResult li").each(function(i,obj){     // obj -> $(".uploadResult li")
+                var target = $(obj);
+
+                console.log(target);
+
+                str += "<input  name='boardImageDtoList["+i+"].imgName' value='"+target.data('name') +"'>";
+
+                str += "<input  name='boardImageDtoList["+i+"].path' value='"+target.data('path')+"'>";
+
+                str += "<input  name='boardImageDtoList["+i+"].uuid' value='"+target.data('uuid')+"'>";
+
+            });
+
+            //태그들이 추가된 것을 확인한 후에 comment를 제거
+            $(".box").html(str);
+
+            //this.save();
+            $("form").submit();
         }),
 
         $("#btn_update").on('click',()=>{
@@ -21,10 +41,8 @@ var board={
     save: function(){
 
         var data ={
-
             title : $('#title').val(),
             content : $('#content').val()
-
         };
 
         console.log(data);

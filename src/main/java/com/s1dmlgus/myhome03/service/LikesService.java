@@ -4,20 +4,27 @@ package com.s1dmlgus.myhome03.service;
 import com.querydsl.core.Tuple;
 import com.s1dmlgus.myhome03.domain.board.Board;
 import com.s1dmlgus.myhome03.domain.board.BoardRepository;
+import com.s1dmlgus.myhome03.domain.boardImage.BoardImage;
 import com.s1dmlgus.myhome03.domain.like.LikeRepository;
 import com.s1dmlgus.myhome03.domain.like.Likes;
 import com.s1dmlgus.myhome03.domain.user.Member;
 import com.s1dmlgus.myhome03.domain.user.MemberRepository;
+import com.s1dmlgus.myhome03.web.dto.boardImage.BoardImageDto;
 import com.s1dmlgus.myhome03.web.dto.likes.LikeResponseDto;
 import com.s1dmlgus.myhome03.web.dto.likes.LikeSearchCondition;
 import com.s1dmlgus.myhome03.web.dto.likes.LikesRequestDto;
+import com.s1dmlgus.myhome03.web.dto.member.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+@Log4j2
 @RequiredArgsConstructor
 @Service
 public class LikesService {
@@ -28,7 +35,7 @@ public class LikesService {
     private final MemberRepository memberRepository;
 
     private int SIZE = 0;
-
+    private LikeSearchCondition likeCond;
 
     // 좋아요 등록
     @Transactional
@@ -89,10 +96,10 @@ public class LikesService {
     public LikeResponseDto findByLike(Long boardId, Long userId) {
 
         // 검색조건
-        LikeSearchCondition likeCond = LikeSearchCondition.builder()
-                                                            .userId(userId)
-                                                            .boardId(boardId)
-                                                            .build();
+        likeCond = LikeSearchCondition.builder()
+                                            .userId(userId)
+                                            .boardId(boardId)
+                                            .build();
 
         System.out.println("좋아요 service~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
@@ -154,6 +161,7 @@ public class LikesService {
 //        return likeResponseDto;
     }
 
+    // 좋아요 삭제
     public Long deleteLikes(Long likeId, Long boardId) {
 
         likeRepository.deleteById(likeId);
@@ -161,4 +169,29 @@ public class LikesService {
 
         return likeCount;
     }
+
+    // 유저가 좋아요 누른 게시물 조회
+    public MemberResponseDto userLikes(Long memberId) {
+
+
+        List<Likes> userLikes = likeRepository.findByMemberId(memberId);
+        List<Board> likeBoard = new ArrayList<>();
+
+
+        for (Likes userLike : userLikes) {
+            Board board = userLike.getBoard();
+            likeBoard.add(board);
+        }
+
+        System.out.println("likeBoard = " + likeBoard);
+
+
+        MemberResponseDto memberResponseDto = MemberResponseDto.builder()
+                .boards(likeBoard)
+                .build();
+
+
+        return memberResponseDto;
+    }
+
 }

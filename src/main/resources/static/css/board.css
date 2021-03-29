@@ -11,3 +11,36 @@
 #likeCount{
     display: inline-block;
 }
+
+.uploadResult {
+    width: 100%;
+    background-color: #fff;
+    margin-top: 10px;
+
+}
+
+.uploadResult ul {
+    display: flex;
+    flex-flow: row;
+    justify-content: left;
+    align-items: center;
+    vertical-align: top;
+    overflow: auto;
+    padding:0;
+    border: 1px solid gray;
+    border-radius: 5px;
+
+}
+
+.uploadResult ul li {
+    list-style: none;
+    padding: 10px;
+
+}
+
+.uploadResult ul li img {
+    width: 100px;
+}
+
+/* slide_banner */
+

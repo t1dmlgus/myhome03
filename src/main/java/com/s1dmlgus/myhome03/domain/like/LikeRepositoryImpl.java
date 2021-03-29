@@ -64,17 +64,28 @@ public class LikeRepositoryImpl implements LikeRepositoryCustom{
         return likeResponseDto;
     }
 
+    @Override
+    public List<Likes> userLike(LikeSearchCondition likeCond) {
+
+
+
+
+        return null;
+    }
+
+
+
+
+
+
     private BooleanExpression boardIdEq(Long boardId) {
 
         return hasText(String.valueOf(boardId)) ? likes.board.id.eq(boardId) : null;
-
     }
 
     private BooleanExpression userIdEq(Long userId) {
 
-
         return hasText(String.valueOf(userId)) ? likes.member.id.eq(userId) : null;
-
     }
 
 

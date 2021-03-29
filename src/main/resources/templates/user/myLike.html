@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:if="http://www.w3.org/1999/xhtml">
+
+<div th:replace="fragments/common :: head('게시판폼')"></div>
+<body>
+
+
+<div th:replace="fragments/common :: menu('like')"></div>
+<link rel="stylesheet" href="/css/userLike.css">
+
+<main class="container">
+
+    <h2 class="starter-template">myLike</h2>
+
+    <div class="likeBoard" >
+        <ul>
+            <li th:each="userLikeBoardDto : ${userLikeBoardDtoList}">
+                <a th:href="@{/board/detail(id=${userLikeBoardDto.boardId})}">
+                    <img th:src="|/display?fileName=${userLikeBoardDto.uploadResultDto.getImageURL()}|" th:alt="|이미지 ${userLikeBoardDto.boardId}|">
+                </a>
+            </li>
+
+            
+        </ul>
+        
+        
+<!--        <div class="text-center">-->
+<!--            <a th:href="@{/board/detail(id=${boardResponseDto.boardId})}">-->
+<!--                <img th:src="|/display?fileName=${boardImg.getImageURL()}|" alt="이미지01">-->
+<!--            </a>-->
+<!--        </div>-->
+    </div>
+
+
+
+</main><!-- /.container -->
+
+<div th:replace="fragments/common :: script"></div>
+
+
+</body>
+</html>

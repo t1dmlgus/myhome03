@@ -11,12 +11,14 @@ import com.s1dmlgus.myhome03.service.BoardService;
 import com.s1dmlgus.myhome03.service.LikesService;
 import com.s1dmlgus.myhome03.service.MemberService;
 import com.s1dmlgus.myhome03.service.ReplyService;
+import com.s1dmlgus.myhome03.web.dto.board.BoardRequestDto;
 import com.s1dmlgus.myhome03.web.dto.board.BoardResponseDto;
 import com.s1dmlgus.myhome03.web.dto.board.BoardSearchCondition;
 import com.s1dmlgus.myhome03.web.dto.likes.LikeResponseDto;
 import com.s1dmlgus.myhome03.web.dto.member.MemberResponseDto;
 import com.s1dmlgus.myhome03.web.dto.reply.ReplyResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,14 +28,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+
+@Log4j2
 @RequiredArgsConstructor
 @RequestMapping("/board")
 @Controller
@@ -43,6 +50,28 @@ public class BoardController {
     private final BoardService boardService;
     private final ReplyService replyService;
     private final LikesService likesService;
+
+
+
+    // 등록
+    @PostMapping("/register")
+    public String save(@Valid BoardRequestDto boardRequestDto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails userDetails) {
+
+        log.info("--------------------------gggdg----------------");
+
+
+        System.out.println("boardRequestDto = " + boardRequestDto);
+
+        /* 핵심기능 */
+
+        System.out.println("boardRequestDto = " + boardRequestDto);
+        boardService.saveBoard(boardRequestDto, userDetails);
+
+        log.info("--------------------------11111g----------------");
+
+        //return new ResponseDto<>(HttpStatus.OK.value(),1);
+        return "redirect:/board/list";
+    }
 
 
     // 게시물 전체 조회
@@ -78,7 +107,7 @@ public class BoardController {
         // 총 페이지 수(= 61)
         int totalPages = result.getTotalPages();
 
-        //<td th:each="i : ${#numbers.sequence(1, 61)}">[[${i}]]</td>
+
 
         int tempEnd = (int) (Math.ceil(page / 10.0)) * 10;
         int start = tempEnd - 9;
@@ -98,6 +127,7 @@ public class BoardController {
         model.addAttribute("end", end);
         model.addAttribute("prev", prev);
         model.addAttribute("next", next);
+
 
 
         
@@ -148,9 +178,9 @@ public class BoardController {
         }
 
 
-        BoardResponseDto board = boardService.findById(id);                 // 게시판 id
-        List<ReplyResponseDto> reply = replyService.findByBoard(id);        // 게시판 id
-        LikeResponseDto like = likesService.findByLike(id, userId);        // 게시판 id, 유저 id
+        BoardResponseDto board = boardService.findById(id);                 //  boardId
+        List<ReplyResponseDto> reply = replyService.findByBoard(id);        // boardId
+        LikeResponseDto like = likesService.findByLike(id, userId);        // boardId, userId
 
         System.out.println("LikeResponseDto = " + like);
 
@@ -165,6 +195,8 @@ public class BoardController {
         model.addAttribute("reply", reply);
         model.addAttribute("like", like);
 
+        //board.getUploadResultDtoList().get(1).getImageURL();
+        //reply.get(0).getReplyId()
 
 
 //        for (LikeResponseDto like : likes) {

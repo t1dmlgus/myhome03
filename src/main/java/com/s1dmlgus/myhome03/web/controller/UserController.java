@@ -1,19 +1,41 @@
 package com.s1dmlgus.myhome03.web.controller;
 
 import com.s1dmlgus.myhome03.config.auth.PrincipalDetails;
+import com.s1dmlgus.myhome03.domain.board.Board;
 import com.s1dmlgus.myhome03.domain.user.Member;
+import com.s1dmlgus.myhome03.service.BoardService;
+import com.s1dmlgus.myhome03.service.LikesService;
+import com.s1dmlgus.myhome03.web.dto.board.BoardResponseDto;
+import com.s1dmlgus.myhome03.web.dto.member.MemberResponseDto;
+import com.s1dmlgus.myhome03.web.dto.upload.UploadResultDto;
+import com.s1dmlgus.myhome03.web.dto.upload.UserLikeBoardDto;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.thymeleaf.templateresolver.ITemplateResolver;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
-
+@Log4j2
+@RequiredArgsConstructor
 @Controller
 public class UserController {
+
+
+    private final LikesService likesService;
+    private final BoardService boardService;
+
+
 
     // 세션정보 확인하기 -> 일반로그인
     @GetMapping("/test/login")
@@ -69,6 +91,53 @@ public class UserController {
     }
 
 
+    @GetMapping("user/like")
+    public String userLike(Model model, @AuthenticationPrincipal PrincipalDetails userDetails){
+
+
+        MemberResponseDto memberResponseDto;
+        List<UserLikeBoardDto> userLikeBoardDtoList = new ArrayList<>();    // userLikeBoardDto -> 유저가 좋아하는 게시물DTO 생성
+
+
+        Member user = userDetails.getUser();
+        Long userId = userDetails.getUser().getId();        // 세션 유저
+
+
+        model.addAttribute("user", user);
+
+
+        memberResponseDto = likesService.userLikes(userId);
+
+        log.info("memberResponseDto = " + memberResponseDto);
+
+
+        System.out.println(memberResponseDto.getBoards().size());
+
+        for (Board board : memberResponseDto.getBoards()) {
+
+            log.info("board = " + board.getId());
+            
+            BoardResponseDto boardResponseDto = boardService.findById(board.getId());            // 게시물 번호에 맞는 이미지 -> dto
+            log.info("boardResponseDto = " + boardResponseDto);
+
+
+            if (boardResponseDto.getUploadResultDtoList().size() != 0){
+
+                UploadResultDto thumbnailImg = boardResponseDto.getUploadResultDtoList().get(0);
+                log.info("thumbnailURL : " +thumbnailImg );
+
+
+                userLikeBoardDtoList.add(new UserLikeBoardDto(boardResponseDto.getBoardId(),thumbnailImg));         
+
+            }
+            log.info("userLikeBoardDtoList : " + userLikeBoardDtoList);
+
+        }
+        model.addAttribute("userLikeBoardDtoList", userLikeBoardDtoList);
+
+
+        return "user/myLike";
+    }
 
 
 }

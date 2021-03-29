@@ -10,21 +10,56 @@
 <main class="container">
 
     <h2 class="starter-template">게시판</h2>
-    <form>
+
+
+    <form th:action="@{/board/register}" th:method="post">
+
         <div class="form-group">
             <label for="title">제02목</label>
-            <input type="text" class="form-control" id="title" placeholder="제목을 입력하시오">
+            <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하지예">
         </div>
         <div class="form-group">
             <label for="content">내02용지</label>
-            <textarea class="form-control" id="content" rows="8" placeholder="제목을 입력하슈"></textarea>
+            <textarea class="form-control" id="content" name="content" rows="8" placeholder="제목을 입력하지예"></textarea>
         </div>
+
+
+        <div class="form-group fileForm">
+            <label >Image Files</label>
+            <div class="custom-file">
+                <input type="file"  class="custom-file-input files" id="fileInput" multiple>
+                <label for="fileInput" class="custom-file-label" data-browse="Browse"></label>
+            </div>
+        </div>
+        <div class="box">
+
+
+        </div>
+        <div class="uploadResult">
+
+        </div>
+
+<!--        <div class="text-right">-->
+<!--            <button type="submit" class="btn btn-primary">Submit</button>-->
+<!--        </div>-->
+
     </form>
+
+    <!-- 이미지 업로드 -->
+<!--    <form th:action="@{/movie/register}" th:method="post">-->
+
+
+<!--    </form>-->
+
+
+
     <a href="/" role="button" class="btn btn-secondary">취소</a>
     <button id="btn_save" class="btn btn-primary">등록</button>
 </main><!-- /.container -->
 
+
 <div th:replace="fragments/common :: script"></div>
+<script src="/js/boardImage.js"></script>
 
 </body>
 </html>
