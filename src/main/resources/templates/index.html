@@ -2,20 +2,39 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <div th:replace="fragments/common :: head('헬스프링쿠트')"></div>
-
+<link rel="stylesheet" href="/css/index.css">
     <body>
 
         <div th:replace="fragments/common :: menu('home')"></div>
         <main role="main" class="container">
 
             <div class="starter-template">
-                <h1>스프링 부트 튜토리얼02</h1>
-                <p>스프링 부트를 이용해 웹 페이지 제작
-                Spring Security, JPA를 이용해 보안 설정과 데이터 다루기</p>
+                <h1>Art musium</h1>
+                <div>NEW</div>
             </div>
+
+
+            <div class="new_board">
+                <ul>
+                    <li th:each="boardNew : ${boardNewDtos}">
+                        <a th:href="@{/board/detail(id=${boardNew.boardId})}">
+                            <img th:src="|/display?fileName=${boardNew.uploadResultDto.getImageURL()}|" th:alt="|이미지 ${boardNew.boardId}|">
+                        </a>
+                    </li>
+
+
+                </ul>
+
+
+
+
+            </div>
+
 
         </main>
         <!-- /.container -->
+
+
 
 
         <div th:replace="fragments/common :: script"></div>

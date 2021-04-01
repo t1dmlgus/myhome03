@@ -42,7 +42,8 @@ public class LikesService {
     public LikeResponseDto saveLikes(LikesRequestDto likesRequestDto) {
 
 
-        // boardRepository, memberRepository -> 의존됨
+        System.out.println("likesRequestDto = " + likesRequestDto);
+
 
         Member member = memberRepository.findById(likesRequestDto.getUserId()).orElseThrow(() -> {
             return new IllegalArgumentException("해당 번호의 유저는 없습니다.");
@@ -95,70 +96,39 @@ public class LikesService {
     @Transactional
     public LikeResponseDto findByLike(Long boardId, Long userId) {
 
-        // 검색조건
-        likeCond = LikeSearchCondition.builder()
-                                            .userId(userId)
-                                            .boardId(boardId)
-                                            .build();
-
-        System.out.println("좋아요 service~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-
+        System.out.println("boardId = " + boardId);
+        System.out.println("userId = " + userId);
 
         LikeResponseDto likeResponseDto = new LikeResponseDto();
 
-        LikeResponseDto likeDto = likeRepository.boardLike(likeCond);
-        Long likeCount = likeRepository.countLike(likeCond.getBoardId());
+        // 검색조건
+        LikeSearchCondition likeCond = new LikeSearchCondition(userId, boardId);
+        System.out.println("likeCond = " + likeCond);
 
 
-        if(likeDto != null) {
-            likeResponseDto.setLikeId(likeDto.getLikeId());
-            likeResponseDto.setStatus(likeDto.getStatus());
-
-        }
+        Long likeCount = likeRepository.countLike(boardId);
+        System.out.println("likeCount = " + likeCount);
         likeResponseDto.setCount(likeCount);
+
+        Long memberId = likeRepository.userLike(likeCond);
+        likeResponseDto.setMemberId(memberId);
+
+
+        log.info("likeResponseDto : "+ likeResponseDto);
+
+
+        //세션 id == like.member_id
+        if(userId != null && userId.equals(likeResponseDto.getMemberId())){
+            likeResponseDto.setStatus(1);
+        }
+
+
+        System.out.println("likeResponseDto@#@#@# = " + likeResponseDto);
+
 
 
         return likeResponseDto;
 
-//        Long likeCount = likeRepository.countLike(boardId); // 좋아요 개수(각 board_id 에 맞는 좋아요 개수 반환)
-//
-//        like.setCount(likeCount);
-
-
-
-
-//        List<Likes> likes = likeRepository.findByBoardId(boardId);
-//
-//        for (Likes like : likes) {
-//            like.getMember().getId();
-//        }
-//
-//        List<LikeResponseDto> likeResponseDto = likes.stream().map(LikeResponseDto::new)
-//                .collect(Collectors.toList());
-//
-//
-//        for (LikeResponseDto likeResponseDto1 : likeResponseDto) {
-//            System.out.println("responseDto = " + likeResponseDto1);
-//
-//
-//            int i = likeResponseDto1.getUserId().compareTo(userId);         // view 화면에 heart 표시
-//            System.out.println("i = " + i);
-//
-//            if (i == 0)
-//                likeResponseDto1.setShowHeart(1);
-//
-//            //likeResponseDto1.setCount(likeResponseDto.size());
-//
-//        }
-//
-//        System.out.println("likeResponseDto.si = " + likeResponseDto.size());
-//
-//
-//        for (LikeResponseDto responseDto : likeResponseDto) {
-//            System.out.println("responseDto = " + responseDto);
-//        }
-//
-//        return likeResponseDto;
     }
 
     // 좋아요 삭제

@@ -1,0 +1,22 @@
+.new_board{
+
+}
+.new_board ul{
+    margin: 0 2%;
+    font-size: 0;
+}
+.new_board ul li{
+    display:inline-block;
+    width:32%;
+    margin:0 0 3% 1%;
+
+    over-flow: hidden;
+}
+.new_board ul li a{
+    display:block;
+    background: gray;
+
+
+
+
+}

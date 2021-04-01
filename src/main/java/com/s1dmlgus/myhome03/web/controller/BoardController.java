@@ -79,13 +79,13 @@ public class BoardController {
     public String list(Model model, BoardSearchCondition condition, @PageableDefault(size = 10, sort = "boardId", direction = Sort.Direction.DESC) Pageable pageable, @AuthenticationPrincipal PrincipalDetails userDetails){
 
 
-
         try{
             Member user = userDetails.getUser();
             model.addAttribute("user", user);
 
         }catch (NullPointerException e){
-            System.out.println("session_NullPointerException = " + e);
+            log.info("NullPointerException = "+e);
+
         }
 
 
@@ -93,13 +93,17 @@ public class BoardController {
         condition = new BoardSearchCondition(condition.getBoardTitle(), condition.getUsername(), condition.getBoardContent());
 
 
+
         Page<BoardResponseDto> result = boardService.board_list(condition, pageable);
 
-        System.out.println(result.getPageable());
-        System.out.println(result.getContent());
+
+        log.info("result.getPageable()" + result.getPageable());
+        log.info("result.getContent()" + result.getContent());
+
 
 
         System.out.println(result.getSort());
+
 
         // 현재 페이지
         int page = result.getPageable().getPageNumber() + 1;
@@ -144,77 +148,65 @@ public class BoardController {
 
 
     // 게시물 상세정보
-    @Async
-    @GetMapping("/detail")
+    @GetMapping("/detail")                  // board_id
     public String detail(Model model, @RequestParam Long id, @AuthenticationPrincipal PrincipalDetails userDetails){
 
         Long userId = null;   // 세션 userId
+        Member user = null;
 
         // 세션 정보 확인
-
         try{
-            Member user = userDetails.getUser();
-
-            model.addAttribute("user", user);
-
-
+            user = userDetails.getUser();
             userId = user.getId();                                          // 현재 세션 유저(userId)
+
             //System.out.println(id1);
         }catch (NullPointerException e){
 
-            System.out.println("session_NullPointerException = " + e);
+            log.info("로그인 되어있지 않습니다. "+e);
         }
-
-
         System.out.println(userId);
-
-
-        MemberResponseDto member = memberService.findById(userId);
-
-        List<Reply> replies = member.getReplies();
-
-        for (Reply reply : replies) {
-            System.out.println("reply = " + reply);
-        }
-
 
         BoardResponseDto board = boardService.findById(id);                 //  boardId
         List<ReplyResponseDto> reply = replyService.findByBoard(id);        // boardId
         LikeResponseDto like = likesService.findByLike(id, userId);        // boardId, userId
 
-        System.out.println("LikeResponseDto = " + like);
 
-        String memberName = board.getMemberName();
-        System.out.println("memberNamecc = " + memberName);
+        System.out.println("like@@@@@@ = " + like);
 
-        String principal = userDetails.getUser().getUsername();
-        System.out.println("UserDetails - usernamecc = " + principal);
-
-
+        model.addAttribute("user", user);
         model.addAttribute("board", board);
         model.addAttribute("reply", reply);
         model.addAttribute("like", like);
 
-        //board.getUploadResultDtoList().get(1).getImageURL();
-        //reply.get(0).getReplyId()
 
 
-//        for (LikeResponseDto like : likes) {
-//            like.getShowHeart();
-//            System.out.println("like.getShowHeart()11111 = " + like.getShowHeart());
-//            model.addAttribute("likeShow", like.getShowHeart());
+
+//        MemberResponseDto member = memberService.findById(userId);
+//
+//        List<Reply> replies = member.getReplies();
+//
+//        for (Reply reply : replies) {
+//            System.out.println("reply = " + reply);
+//        }
 //
 //
-//        }
 
-//        board.getBoardTitle()
-        //System.out.println(reply.get(0).getReplyContent());
 
-        //replys.get(0).getReplyId()
 
-//        if(memberName.equals(principal)){
-//            return "board/board_update";
-//        }
+//
+//        System.out.println("LikeResponseDto = " + like);
+//
+//        String memberName = board.getMemberName();
+//        System.out.println("memberNamecc = " + memberName);
+//
+//        String principal = userDetails.getUser().getUsername();
+//        System.out.println("UserDetails - usernamecc = " + principal);
+//
+//
+
+
+
+
 
         return "board/board_detail";
     }

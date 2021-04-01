@@ -27,6 +27,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
     }
 
+    // 전체 게시판 페이징
     @Override
     public Page<BoardResponseDto> searchPage(BoardSearchCondition condition, Pageable pageable) {
 
@@ -60,6 +61,22 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
         return new PageImpl<>(content, pageable, total);
 
     }
+
+    // new Board
+    @Override
+    public List<Board> newBoard() {
+
+        List<Board> boards = queryFactory
+                .select(board)
+                .from(board)
+                .orderBy(board.id.desc())
+                .limit(9)
+                .fetch();
+
+        return boards;
+    }
+
+
 
     private BooleanExpression boardtitleEq(String boardTitle) {
         return hasText(boardTitle) ? board.title.contains(boardTitle) : null;

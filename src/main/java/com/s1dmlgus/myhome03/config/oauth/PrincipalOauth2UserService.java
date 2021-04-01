@@ -4,7 +4,9 @@ import com.s1dmlgus.myhome03.config.auth.PrincipalDetails;
 import com.s1dmlgus.myhome03.domain.user.Member;
 import com.s1dmlgus.myhome03.domain.user.MemberRepository;
 import com.s1dmlgus.myhome03.domain.user.Role;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -13,17 +15,20 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 
-
-
+@Log4j2
 @Service
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    DefaultListableBeanFactory df;
 
     @Autowired
     private MemberRepository memberRepository;
+
+//    @Autowired
+//    BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     // 구글로 받은 userRequest 데이터에 대한 후처리 함수
     @Override
@@ -39,12 +44,18 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         System.out.println("oAuth2User.getAttributes() = " + oAuth2User.getAttributes());
 
 
+        for (String beanDefinitionName : df.getBeanDefinitionNames()) {
+            System.out.println("name22 = " + df.getBean(beanDefinitionName).getClass().getName());
+        }
+
+
         // 강제 회원가입
 
         String provider = userRequest.getClientRegistration().getRegistrationId();
         String providerId = oAuth2User.getAttribute("sub");
         String username = provider + "_" + providerId;
-        String password = bCryptPasswordEncoder.encode("s1dmlgus");
+//        String password = bCryptPasswordEncoder.encode("s1dmlgus");
+        String password = "s1dmlgus";
         String email = oAuth2User.getAttribute("email");
         Role role = Role.ROLE_USER;
 
@@ -65,6 +76,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         }
 
+        log.info("userEntity" + userEntity);
         return new PrincipalDetails(userEntity, oAuth2User.getAttributes());
+        //return null;
     }
 }

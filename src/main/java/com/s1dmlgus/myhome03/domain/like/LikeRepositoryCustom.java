@@ -11,8 +11,6 @@ public interface LikeRepositoryCustom {
 
     public Long countLike(Long id);
 
-    public LikeResponseDto boardLike(LikeSearchCondition likeCond);
-
-    public List<Likes> userLike(LikeSearchCondition likeCond);
+    public Long userLike(LikeSearchCondition likeCond);
 
 }

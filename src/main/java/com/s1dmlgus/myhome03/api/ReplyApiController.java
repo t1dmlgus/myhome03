@@ -6,6 +6,7 @@ import com.s1dmlgus.myhome03.service.ReplyService;
 import com.s1dmlgus.myhome03.web.dto.ResponseDto;
 import com.s1dmlgus.myhome03.web.dto.reply.ReplyDeleteRequestDto;
 import com.s1dmlgus.myhome03.web.dto.reply.ReplyRequestDto;
+import com.s1dmlgus.myhome03.web.dto.reply.ReplyResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -26,22 +27,17 @@ public class ReplyApiController {
 
     // 댓글 등록
     @PostMapping("/api/v1/reply")
-    public ResponseDto<Integer> save(@Valid @RequestBody ReplyRequestDto replyRequestDto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails userDetails) {
-
-//        log.info("tktktkt 2 2");
-//
-//        System.out.println("replyRequestDto.getContent() = " + replyRequestDto.getContent());
-//        System.out.println("boardId = " + boardId);
+    public ResponseDto<ReplyResponseDto> save(@Valid @RequestBody ReplyRequestDto replyRequestDto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails userDetails) {
 
 
         /* 핵심기능 */
 
         Long boardId = replyRequestDto.getBoardId();
-        replyService.saveReply(boardId, replyRequestDto, userDetails);
+        ReplyResponseDto replyResponseDto = replyService.saveReply(boardId, replyRequestDto, userDetails);
 
+        System.out.println("replyResponseDto = " + replyResponseDto);
 
-
-        return new ResponseDto<>(HttpStatus.OK.value(),1);
+        return new ResponseDto<>(HttpStatus.OK.value(),replyResponseDto);
     }
 
     // 댓글 삭제

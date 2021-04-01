@@ -1,29 +1,26 @@
-package com.s1dmlgus.myhome03.web.controller;
-
+package com.s1dmlgus.myhome03.api;
 
 import com.s1dmlgus.myhome03.config.auth.PrincipalDetails;
 import com.s1dmlgus.myhome03.service.BoardService;
-import com.s1dmlgus.myhome03.service.ReplyService;
+import com.s1dmlgus.myhome03.service.MemberService;
 import com.s1dmlgus.myhome03.web.dto.ResponseDto;
 import com.s1dmlgus.myhome03.web.dto.board.BoardRequestDto;
-import com.s1dmlgus.myhome03.web.dto.reply.ReplyRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Log4j2
 @RequiredArgsConstructor
+@Log4j2
 @RestController
 public class BoardApiController {
 
+
     private final BoardService boardService;
-//    private final ReplyService replyService;
 
 
     // 등록
@@ -70,5 +67,4 @@ public class BoardApiController {
         return new ResponseDto<>(HttpStatus.OK.value(), 1);
 
     }
-
 }

@@ -8,13 +8,35 @@ var reply ={
 
                 console.log(this);
                 this.replySave();
-
-
          })
 
 
 
     },
+     saveReply: function(aa){
+
+                   var listGroup = $(".list-group");
+                   var replyContent = aa.data.replyContent;
+                   var replyMember = aa.data.memberName;
+                   var replyId = aa.data.replyId;
+
+                    $('#reply_content').val("");
+
+
+                   var str ="";
+
+                    str += "<li class='replys list-group-item d-flex justify-content-between'>"
+                    str += "<div>" + replyContent + "</div>"
+                    str += "<div class='d-flex'>"
+                    str += "<div class='font-italic reply_user'>"+ replyMember + "</div>"
+                    str += "<button onclick='reply.replyDelete(" + replyId + ")' class='badge'>삭제</button>"
+                    str += "</li>"
+
+                    console.log(str);
+
+                   $(".list-group").append(str);
+
+     },
 
     replySave: function(){
 
@@ -38,8 +60,11 @@ var reply ={
            }).done(function(aa){
 
               alert('댓글이 등록되었습니다');
+              console.log(aa);
+              console.log(aa.data);
 
-              location.href ='/board/detail?id='+data.boardId;
+              reply.saveReply(aa);              // 비동기함수
+
 
            }).fail(function(error){
 
@@ -85,6 +110,8 @@ var reply ={
             })
 
     }
+
+
 
 }
 

@@ -12,14 +12,17 @@ import lombok.NoArgsConstructor;
 public class LikeResponseDto {
 
     private Long likeId;
-    private int status;
+    private int status = 0;
     private Long count;
+    private Long memberId;
+
+
 
 
     @Builder
     public LikeResponseDto(Likes likes) {           // ?
         this.likeId = likes.getId();
-        this.status = likes.getStatus();
+
 
 
     }

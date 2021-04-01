@@ -28,14 +28,16 @@ public class Member extends BaseTimeEntity {
     private String username;
     private String password;
     private String email;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+    private int age;
+
     private String provider;
     private String providerId;
 
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
 
-    private int age;
 
 
     @OneToMany(mappedBy = "member")

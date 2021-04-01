@@ -35,6 +35,7 @@ public class uploadApiController {
     private String uploadPath;
 
 
+    // 파일 업로드
     @PostMapping("/uploadAjax")
     public ResponseEntity<List<UploadResultDto>> uploadFile(MultipartFile[] uploadFiles){
 
@@ -127,6 +128,7 @@ public class uploadApiController {
 
     }
 
+    // 업로드 파일 보여주기
     @GetMapping("/display")
     public ResponseEntity<byte[]> getFile(String fileName){
 
@@ -173,7 +175,7 @@ public class uploadApiController {
         return result;
     }
 
-
+    // 업로드된 파일 삭제
     @PostMapping("/removeFile")
     public ResponseEntity<Boolean> removeFile(String fileName){
 
@@ -205,7 +207,7 @@ public class uploadApiController {
 
     }
 
-
+    // 업로드 파일 경로
     private String makeFolder() {
 
         String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));

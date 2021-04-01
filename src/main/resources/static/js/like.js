@@ -4,6 +4,8 @@ var like ={
 
             $('#btn-heart').click(function(){           // 좋아요 클릭
 
+                    if($('#user').val() != null){
+
                         console.log("ttt~~");
                         if($(this).children('.xi-heart-o').hasClass('xi-heart-o')){
 
@@ -21,8 +23,14 @@ var like ={
 
                         }
 
+                    }else{
 
-                        console.log(this.className);
+                        alert("로그인이 필요한 서비스입니다.(좋아요)");
+                        location.href="/auth/user/loginForm";
+
+                    }
+
+                    console.log(this.className);
                 });
 
 

@@ -8,6 +8,7 @@ import com.s1dmlgus.myhome03.domain.boardImage.BoardImageRepository;
 import com.s1dmlgus.myhome03.domain.reply.Reply;
 import com.s1dmlgus.myhome03.domain.reply.ReplyRepository;
 import com.s1dmlgus.myhome03.domain.user.Member;
+import com.s1dmlgus.myhome03.web.dto.board.BoardNewDto;
 import com.s1dmlgus.myhome03.web.dto.board.BoardRequestDto;
 import com.s1dmlgus.myhome03.web.dto.board.BoardResponseDto;
 import com.s1dmlgus.myhome03.web.dto.board.BoardSearchCondition;
@@ -42,6 +43,8 @@ public class BoardService {
     private final LikesService likesService;
 
 
+    List<UploadResultDto> uploadResultDtos = new ArrayList<>();
+
     // 전체 리스트 조회
     @Transactional
     public Page<BoardResponseDto> board_list(BoardSearchCondition condition, Pageable pageable) {
@@ -56,26 +59,39 @@ public class BoardService {
         return result;
 
     }
+    // NEW Board 조회
+    @Transactional
+    public List<BoardNewDto> board_new(){
+
+        List<Board> boards = boardRepository.newBoard();
+        List<BoardNewDto> boardNewDtos = new ArrayList<>();
+
+        for (Board board : boards) {
+
+            List<BoardImage> boardImages = boardImageRepository.findByBoardId(board.getId());
 
 
-    //    // 전체 리스트 조회
-//    @Transactional
-//    public Page<BoardResponseDto> board_list(Pageable pageable){
-//
-//        log.info("전체 리스트조회[service]------------------------------------------");
-//
-//        Page<Board> all = boardRepository.findAll(pageable);
-//
-//        for (Board board : all) {
-//            System.out.println("board = " + board);
-//        }
-//
-//        List<BoardResponseDto> boardListDto
-//                = all.stream().map(BoardResponseDto::new)
-//                .collect(Collectors.toList());
-//
-//        return boardListDto;
-//    }
+            BoardImage boardImage = boardImages.get(0);
+
+            UploadResultDto uploadResultDto = UploadResultDto.builder()
+                    .fileName(boardImage.getImgName())
+                    .uuid(boardImage.getUuid())
+                    .folderPath(boardImage.getPath())
+                    .build();
+
+            BoardNewDto boardNewDto = new BoardNewDto(board.getId(), uploadResultDto);
+            boardNewDtos.add(boardNewDto);
+
+        }
+
+        System.out.println(boardNewDtos);
+
+
+        return boardNewDtos;
+    }
+
+
+
 
 
     // 게시물 조회
@@ -90,7 +106,7 @@ public class BoardService {
 
         List<BoardImage> boardImages = boardImageRepository.findByBoardId(id);
 
-        List<UploadResultDto> uploadResultDtos = new ArrayList<>();
+
 
         for (BoardImage boardImage : boardImages) {
 
@@ -178,6 +194,7 @@ public class BoardService {
     }
 
     // 삭제
+    @Transactional
     public void deleteBoard(Long boardId) {
 
         log.info("[boardApiController] boardService.deleteBoard 호출 --------------------------------------");

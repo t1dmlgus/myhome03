@@ -11,12 +11,14 @@ import com.s1dmlgus.myhome03.web.dto.board.BoardResponseDto;
 import com.s1dmlgus.myhome03.web.dto.reply.ReplyRequestDto;
 import com.s1dmlgus.myhome03.web.dto.reply.ReplyResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j2
 @RequiredArgsConstructor
 @Service
 public class ReplyService {
@@ -26,25 +28,40 @@ public class ReplyService {
 
     // 댓글 등록
     @Transactional
-    public void saveReply(Long id, ReplyRequestDto replyRequestDto, PrincipalDetails userDetails){
+    public ReplyResponseDto saveReply(Long id, ReplyRequestDto replyRequestDto, PrincipalDetails userDetails){
 
 
         //세션 유저
         Member user = userDetails.getUser();
+
+        // 게시물
         Board board = boardRepository.findById(id).orElseThrow(() -> {
 
             return new IllegalArgumentException("해당 번호의 게시물이 없스빈다");
         });
 
+        // dto -> entity
         Reply reply = replyRequestDto.toEntity(board, user);
 
-        System.out.println("reply = " + reply);
 
+        // 댓글 등록
         Reply save = replyRepository.save(reply);
 
+        // 등록된 댓글 -> dto
+        ReplyResponseDto replyResponseDto = new ReplyResponseDto(save);
+
+
+        return replyResponseDto;
     }
 
-    // 댓글 조회
+
+
+
+
+
+
+
+    // 해당 게시물 댓글 조회
     @Transactional
     public List<ReplyResponseDto> findByBoard(Long id) {
 

@@ -22,6 +22,13 @@ import java.util.Map;
 @Aspect
 public class BindingAdvice {
 
+
+    /**
+     * 유효성 체크
+     * @param proceedingJoinPoint
+     * @return
+     * @throws Throwable
+     */
     @Around("execution(* com.s1dmlgus.myhome03..*Controller.*(..))")
     public Object validCheck(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
@@ -29,8 +36,8 @@ public class BindingAdvice {
         String method = proceedingJoinPoint.getSignature().getName();
 
 
-        System.out.println("AOP-type = " + type);               // 호출(리플랙션)된 Controller
-        System.out.println("AOP-method = " + method);           // Controller 안에 메서드
+        log.info("AOP-type = " + type);                         // 호출(리플랙션)된 Controller
+        log.info("AOP-method = " + method);                     // Controller 안에 메서드
 
 
         Object[] args = proceedingJoinPoint.getArgs();      // 호출된 메서드 매개변수
@@ -41,6 +48,7 @@ public class BindingAdvice {
             if (arg instanceof BindingResult){
 
                 BindingResult bindingResult = (BindingResult) arg;
+
 
 
                 /* 공통기능 */
@@ -67,6 +75,10 @@ public class BindingAdvice {
         return proceedingJoinPoint.proceed();       // 함수의 스택을 실행하라
 
     }
+
+
+
+
 
 
 }

@@ -26,6 +26,7 @@ public class BoardResponseDto {
     private Long MemberId;
     private String MemberName;
 
+
     private List<UploadResultDto> uploadResultDtoList;
 
 

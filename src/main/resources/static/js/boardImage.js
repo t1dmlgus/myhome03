@@ -105,31 +105,6 @@ var boardImage ={
             }); //$.ajax
         });
 
-//        //prevent submit
-//        $(".btn-primary").on("click", function(e) {
-//            e.preventDefault();
-//
-//            var str = "";
-//
-//            $(".uploadResult li").each(function(i,obj){     // obj -> $(".uploadResult li")
-//                var target = $(obj);
-//
-//                console.log(target);
-//
-//                str += "<input  name='imageDTOList["+i+"].imgName' value='"+target.data('name') +"'>";
-//
-//                str += "<input  name='imageDTOList["+i+"].path' value='"+target.data('path')+"'>";
-//
-//                str += "<input  name='imageDTOList["+i+"].uuid' value='"+target.data('uuid')+"'>";
-//
-//            });
-//
-//            //태그들이 추가된 것을 확인한 후에 comment를 제거
-//            $(".box").html(str);
-//
-//            //$("form").submit();
-//
-//        });
 
         function showResult(uploadResultArr){
 
@@ -143,12 +118,12 @@ var boardImage ={
 
 
                 str += "<li data-name='" + obj.fileName + "' data-path='"+obj.folderPath+"' data-uuid='"+obj.uuid+"'>";
-                str + " <div>";
+                str += " <div>";
                 str += "<button type='button' data-file=\'" + obj.imageURL + "\' "
                 str += "class='btn-warning btn-sm'>X</button><br>";
                 str += "<img src='/display?fileName=" + obj.thumbnailURL + "'>";
                 str += "</div>";
-                str + "</li>";
+                str += "</li>";
 
             });
             str += "</ul>";
@@ -159,28 +134,6 @@ var boardImage ={
 
     }
 
-
-//    function showResult(uploadResultArr){
-//
-//            var uploadUL = $(".uploadResult ul");
-//
-//            var str ="";
-//
-//            $(uploadResultArr).each(function(i, obj) {
-//
-//                str += "<li data-name='" + obj.fileName + "' data-path='"+obj.folderPath+"' data-uuid='"+obj.uuid+"'>";
-//                str + " <div>";
-//                str += "<button type='button' data-file=\'" + obj.imageURL + "\' "
-//                str += "class='btn-warning btn-sm'>X</button><br>";
-//                str += "<img src='/display?fileName=" + obj.thumbnailURL + "'>";
-//                str += "</div>";
-//                str + "</li>";
-//            });
-//
-//            uploadUL.append(str);
-//    }
-//
-//
 }
 boardImage.init();
 

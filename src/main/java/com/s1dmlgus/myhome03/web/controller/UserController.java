@@ -87,10 +87,12 @@ public class UserController {
     @GetMapping("/auth/user/joinForm")
     public String join(){
 
-        return "user/joinForm";
+        return "user/joi nForm";
     }
 
 
+
+    // 마이페이지
     @GetMapping("user/like")
     public String userLike(Model model, @AuthenticationPrincipal PrincipalDetails userDetails){
 
@@ -125,7 +127,6 @@ public class UserController {
 
                 UploadResultDto thumbnailImg = boardResponseDto.getUploadResultDtoList().get(0);
                 log.info("thumbnailURL : " +thumbnailImg );
-
 
                 userLikeBoardDtoList.add(new UserLikeBoardDto(boardResponseDto.getBoardId(),thumbnailImg));         
 

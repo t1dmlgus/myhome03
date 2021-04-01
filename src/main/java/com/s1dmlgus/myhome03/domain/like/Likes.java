@@ -20,7 +20,7 @@ public class Likes extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int status;      // 1: 좋아요, 0: default
+
 
 
     @JoinColumn(name = "board_id")
@@ -34,8 +34,7 @@ public class Likes extends BaseTimeEntity {
 
 
     @Builder
-    public Likes(int status, Board board, Member member) {
-        this.status = status;
+    public Likes(Board board, Member member) {
         this.board = board;
         this.member = member;
     }
