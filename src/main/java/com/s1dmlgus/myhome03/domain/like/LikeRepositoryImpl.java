@@ -1,5 +1,6 @@
 package com.s1dmlgus.myhome03.domain.like;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -9,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 
 import javax.persistence.EntityManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.s1dmlgus.myhome03.domain.like.QLikes.likes;
@@ -43,34 +45,44 @@ public class LikeRepositoryImpl implements LikeRepositoryCustom{
     }
 
     @Override
-    public Long userLike(LikeSearchCondition likeCond) {
+    public LikeResponseDto userLike(LikeSearchCondition likeCond) {
 
-        Long memberId = null;
-        if(likeCond.getUserId() != null){
+        LikeResponseDto likeResponseDto = new LikeResponseDto();            //LikeResponseDto
 
-            memberId = queryFactory
-                    .select(likes.member.id)
+
+        if(likeCond.getUserId() != null){                                   // 세션유저가 있는 경우
+
+            likeResponseDto = queryFactory
+                    .select(Projections.bean(LikeResponseDto.class,
+                            likes.id.as("likeId"), likes.member.id.as("memberId")))
                     .from(likes)
                     .where(
-                            //likes.board.id.eq(likeCond.getBoardId())
-                            boardIdEq(likeCond.getBoardId()),               // 687
+                            boardIdEq(likeCond.getBoardId()),               // boardId
                             userIdEq(likeCond.getUserId())                  // userId
-                    ).distinct()
+                    )
                     .fetchOne();
+
+            if (likeResponseDto == null) {                                  // 유저가 전에 좋아요를 안눌렀을 경우
+
+                return new LikeResponseDto();
+            }
         }
 
+        System.out.println("likeResponseDto = " + likeResponseDto);
 
-        return memberId;
+        return likeResponseDto;
+
     }
 
 
     private BooleanExpression boardIdEq(Long boardId) {
 
+        System.out.println("boardIdEq = " + boardId);
         return hasText(String.valueOf(boardId)) ? likes.board.id.eq(boardId) : null;
     }
 
     private BooleanExpression userIdEq(Long userId) {
-
+        System.out.println("userIdEq = " + userId);
         return userId != null ? likes.member.id.eq(userId) : null;
     }
 

@@ -6,7 +6,6 @@ var like ={
 
                     if($('#user').val() != null){
 
-                        console.log("ttt~~");
                         if($(this).children('.xi-heart-o').hasClass('xi-heart-o')){
 
                             $(this).children('.xi-heart-o').removeClass('xi-heart-o');
@@ -87,8 +86,6 @@ var like ={
 
 
             alert("좋아요 취소👍");
-
-
 
             var data = {
                         userId : $('#user').val(),

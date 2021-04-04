@@ -64,7 +64,7 @@
 
     <!-- 좋아요 -->
     <div class="">
-        <button id="btn-heart" class="btn btn-heart" type="hidden" >
+        <button id="btn-heart" class="btn btn-heart" type="hidden" th:value="${like.likeId}">
             <div th:classappend="${like.status} == 1 ? 'xi-heart' : 'xi-heart-o'">
             </div>
         </button>

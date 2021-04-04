@@ -42,9 +42,7 @@ public class LikesApiController {
     @DeleteMapping("/api/v1/likes")
     public ResponseDto<Long> delete(@RequestBody LikesRequestDto likesRequestDto){
 
-//        System.out.println("getLikeId() = " + likesRequestDto.getLikeId());
-//        System.out.println("likesRequestDto.getUserId() = " + likesRequestDto.getUserId());
-//        System.out.println("likesRequestDto.getBoardId() = " + likesRequestDto.getBoardId());
+        System.out.println("likesRequestDto = " + likesRequestDto);
 
         Long likeCount = likesService.deleteLikes(likesRequestDto.getLikeId(), likesRequestDto.getBoardId());
 

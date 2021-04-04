@@ -99,36 +99,33 @@ public class LikesService {
         System.out.println("boardId = " + boardId);
         System.out.println("userId = " + userId);
 
-        LikeResponseDto likeResponseDto = new LikeResponseDto();
+
 
         // 검색조건
         LikeSearchCondition likeCond = new LikeSearchCondition(userId, boardId);
-        System.out.println("likeCond = " + likeCond);
+        log.info("likeCond : "+likeCond);
 
+        // 좋아요 dto 객체(likeId, memberId)
+        LikeResponseDto likeResponseDto = likeRepository.userLike(likeCond);
+        log.info("likeResponseDto : "+likeResponseDto);
 
+        // 좋아요 카운트
         Long likeCount = likeRepository.countLike(boardId);
-        System.out.println("likeCount = " + likeCount);
         likeResponseDto.setCount(likeCount);
-
-        Long memberId = likeRepository.userLike(likeCond);
-        likeResponseDto.setMemberId(memberId);
 
 
         log.info("likeResponseDto : "+ likeResponseDto);
 
 
-        //세션 id == like.member_id
+        //status 조건 (세션 id == like.member_id)
         if(userId != null && userId.equals(likeResponseDto.getMemberId())){
             likeResponseDto.setStatus(1);
         }
 
-
-        System.out.println("likeResponseDto@#@#@# = " + likeResponseDto);
-
+        log.info("likeResponseDto : "+ likeResponseDto);
 
 
         return likeResponseDto;
-
     }
 
     // 좋아요 삭제

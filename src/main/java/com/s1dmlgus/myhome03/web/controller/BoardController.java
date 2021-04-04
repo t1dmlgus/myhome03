@@ -159,24 +159,24 @@ public class BoardController {
             user = userDetails.getUser();
             userId = user.getId();                                          // 현재 세션 유저(userId)
 
-            //System.out.println(id1);
+
         }catch (NullPointerException e){
 
             log.info("로그인 되어있지 않습니다. "+e);
         }
-        System.out.println(userId);
+        log.info("userId :" + userId);
+
 
         BoardResponseDto board = boardService.findById(id);                 //  boardId
         List<ReplyResponseDto> reply = replyService.findByBoard(id);        // boardId
         LikeResponseDto like = likesService.findByLike(id, userId);        // boardId, userId
 
 
-        System.out.println("like@@@@@@ = " + like);
-
         model.addAttribute("user", user);
         model.addAttribute("board", board);
         model.addAttribute("reply", reply);
         model.addAttribute("like", like);
+
 
 
 

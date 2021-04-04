@@ -3,10 +3,12 @@ package com.s1dmlgus.myhome03.web.dto.likes;
 
 import com.querydsl.core.annotations.QueryProjection;
 import com.s1dmlgus.myhome03.domain.like.Likes;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class LikeResponseDto {
