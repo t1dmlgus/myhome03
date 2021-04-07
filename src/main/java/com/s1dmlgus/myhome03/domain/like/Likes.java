@@ -11,7 +11,7 @@ import lombok.ToString;
 import javax.persistence.*;
 
 
-@ToString(of = {"id", "status"})
+@ToString(exclude = {"board", "member"})
 @Getter
 @NoArgsConstructor
 @Entity
