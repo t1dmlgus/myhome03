@@ -20,7 +20,7 @@ var boardImage ={
           return true;
     }
 
-
+    // 이미지 선택
     $(".custom-file-input").on("change", function() {
 
 
@@ -104,8 +104,6 @@ var boardImage ={
                 }
             }); //$.ajax
         });
-
-
         function showResult(uploadResultArr){
 
 

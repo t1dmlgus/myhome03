@@ -45,6 +45,7 @@ var board={
             content : $('#content').val()
         };
 
+
         console.log(data);
 
         $.ajax({

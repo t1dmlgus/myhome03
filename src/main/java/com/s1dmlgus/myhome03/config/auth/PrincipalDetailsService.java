@@ -29,14 +29,14 @@ public class PrincipalDetailsService implements UserDetailsService {
         System.out.println("username131 = " + username);
         Member userEntity = memberRepository.findByUsername(username);
 
-        System.out.println("UserDetailsService. user = " + userEntity);
+        if (userEntity != null) {
+            return new PrincipalDetails(userEntity);
+        }
 
+        return null;
 
+        // PrincipalDetails(userEntity) 생성되서 리턴될 때 session(내부 Authentication (내부 UserDetails)) 형성된다.
 
-        // PrincipalDetails(userEntity) 생성되서 리턴될 때
-        // session( Authentication ( UserDetails)) 형성된다.
-
-        return new PrincipalDetails(userEntity);
     }
 
 }

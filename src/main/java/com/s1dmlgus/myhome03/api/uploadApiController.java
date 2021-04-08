@@ -39,7 +39,7 @@ public class uploadApiController {
     @PostMapping("/uploadAjax")
     public ResponseEntity<List<UploadResultDto>> uploadFile(MultipartFile[] uploadFiles){
 
-
+        // 가공된 이미지 정보
         System.out.println("uploadFiles = " + uploadFiles);
 
 
@@ -47,9 +47,9 @@ public class uploadApiController {
 
         for (MultipartFile uploadFile : uploadFiles) {
 
-            System.out.println("uploadFile = " + uploadFile.getContentType());
-            System.out.println("uploadFile = " + uploadFile.getOriginalFilename());
-            System.out.println("uploadFile = " + uploadFile.getName());
+            System.out.println("uploadFile.getContentType() = " + uploadFile.getContentType());
+            System.out.println("uploadFile.getOriginalFilename() = " + uploadFile.getOriginalFilename());
+            System.out.println("uploadFile.getName() = " + uploadFile.getName());
 
             if (uploadFile.getContentType().startsWith("image") == false){
 
@@ -59,14 +59,16 @@ public class uploadApiController {
 
             // 실제 파일 이름 IE나 Edge는 전체 경로로 들어오므로
             String originalName = uploadFile.getOriginalFilename();
-            System.out.println("originalName = " + originalName);
+            log.info("originalName = " + originalName);
+
             String fileName = originalName.substring(originalName.lastIndexOf("\\") + 1);   // 이해 ok
+            log.info("fileName = " + fileName);
 
-
-            log.info("fileName" + fileName);
 
             // 날짜 폴더 생성
             String folderPath = makeFolder();
+
+
 
             // UUID
             String uuid = UUID.randomUUID().toString();
@@ -224,8 +226,10 @@ public class uploadApiController {
 
         if (uploadPathFolder.exists() == false) {
 
-            uploadPathFolder.mkdir();
+            uploadPathFolder.mkdirs();
+
         }
+
         return folderPath;
 
     }

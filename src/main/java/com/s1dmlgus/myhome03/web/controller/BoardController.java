@@ -55,12 +55,10 @@ public class BoardController {
 
     // 등록
     @PostMapping("/register")
-    public String save(@Valid BoardRequestDto boardRequestDto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails userDetails) {
-
-        log.info("--------------------------gggdg----------------");
-
+    public String save(Model model, @Valid BoardRequestDto boardRequestDto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails userDetails) {
 
         System.out.println("boardRequestDto = " + boardRequestDto);
+
 
         /* 핵심기능 */
 
@@ -88,19 +86,14 @@ public class BoardController {
 
         }
 
-
         // 검색조건
         condition = new BoardSearchCondition(condition.getBoardTitle(), condition.getUsername(), condition.getBoardContent());
 
 
 
         Page<BoardResponseDto> result = boardService.board_list(condition, pageable);
-
-
         log.info("result.getPageable()" + result.getPageable());
         log.info("result.getContent()" + result.getContent());
-
-
 
         System.out.println(result.getSort());
 
@@ -176,35 +169,6 @@ public class BoardController {
         model.addAttribute("board", board);
         model.addAttribute("reply", reply);
         model.addAttribute("like", like);
-
-
-
-
-
-//        MemberResponseDto member = memberService.findById(userId);
-//
-//        List<Reply> replies = member.getReplies();
-//
-//        for (Reply reply : replies) {
-//            System.out.println("reply = " + reply);
-//        }
-//
-//
-
-
-
-//
-//        System.out.println("LikeResponseDto = " + like);
-//
-//        String memberName = board.getMemberName();
-//        System.out.println("memberNamecc = " + memberName);
-//
-//        String principal = userDetails.getUser().getUsername();
-//        System.out.println("UserDetails - usernamecc = " + principal);
-//
-//
-
-
 
 
 

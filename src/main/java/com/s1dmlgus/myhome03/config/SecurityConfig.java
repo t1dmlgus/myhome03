@@ -35,14 +35,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/board/**", "/auth/**", "/css/**", "/js/**", "/img/**")
+                .antMatchers("/","/board/list","/board//detail","/display", "/auth/**", "/css/**", "/js/**", "/img/**")
                 .permitAll()
-//                .anyRequest()
-//                .authenticated()
+                .anyRequest()
+                .authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/auth/user/loginForm")
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/login")   // /login 주소가 호출되면 시큐리티가 낚아채서 대신 로그인을 진행한다. -> controller에 /login을 만들 필요가 읍다.
                 .defaultSuccessUrl("/")
                 .and()
                 .logout()

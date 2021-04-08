@@ -14,6 +14,20 @@ import java.util.Collection;
 import java.util.Map;
 
 
+/**
+ *
+ *
+ Security Session 안에 오브젝트가 정해져있다. ->Authentication 객체
+
+ Authentication 객체 안에는 UserDetails(User정보)타입 객체가 필요
+
+ *
+ *
+ */
+
+
+
+
 @NoArgsConstructor
 @Data
 public class PrincipalDetails implements UserDetails, OAuth2User {
@@ -50,7 +64,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
 
 
-
+    // 유저의 권한을 리턴하는 곳
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
