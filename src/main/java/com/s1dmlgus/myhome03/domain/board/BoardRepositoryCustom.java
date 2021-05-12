@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface BoardRepositoryCustom {
 
+    List<Board> newBoard();
     Page<BoardResponseDto> searchPage(BoardSearchCondition condition, Pageable pageable);
 
-    List<Board> newBoard();
 }

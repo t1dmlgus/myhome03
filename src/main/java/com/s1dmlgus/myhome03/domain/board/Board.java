@@ -13,7 +13,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@ToString(of = {"id","title","content"})
+@ToString(of = {"id", "title", "content"})
 @Getter
 @NoArgsConstructor
 @Entity

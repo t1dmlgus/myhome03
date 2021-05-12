@@ -12,6 +12,25 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+/**
+ *  구글 로그인이 완료 된 두 후처리가 필요함
+ *  1. 코드받기
+ *  2. 엑세스 토큰(권한)
+ *  3. 사용자 프로필 정보를 받아옴
+ *  4. 그 정보를 토대로 회원가입을 자동으로 진행시킴
+ *
+ *  Tip: 구글로그인이 완료된 후
+ *  -> 코드를 받는것이 아니라,
+ *      엑세스 토큰 + 사용자 프로필 정보를 한방에 받는다.
+ *      ->
+ *      OAuth 클라이언트 라이브러리를 쓰면 편리하다
+ *
+ *      userService( 타입 -> OAuth2UserSerivce 타입)
+ *
+  */
+
+
+
 
 @EnableGlobalMethodSecurity(securedEnabled = true)      // 시큐리티 어노테이션 활성화   -> @Secured("ROLE_ADMIN")..등
 @Configuration

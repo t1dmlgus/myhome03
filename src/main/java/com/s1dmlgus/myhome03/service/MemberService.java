@@ -6,6 +6,7 @@ import com.s1dmlgus.myhome03.domain.user.MemberRepository;
 import com.s1dmlgus.myhome03.domain.user.Role;
 import com.s1dmlgus.myhome03.web.dto.member.MemberRequestDto;
 import com.s1dmlgus.myhome03.web.dto.member.MemberResponseDto;
+import com.s1dmlgus.myhome03.web.dto.member.SessionMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,9 @@ public class MemberService {
     @Transactional
     public void saveMember(MemberRequestDto memberRequestDto){
 
-        String rowPassword = memberRequestDto.getPassword();
 
+
+        String rowPassword = memberRequestDto.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rowPassword);
 
 
@@ -39,7 +41,7 @@ public class MemberService {
 
         System.out.println("member = " + member);
 
-        memberRepositsory.save(member).getId();
+        memberRepositsory.save(member);
 
 
     }
@@ -48,11 +50,36 @@ public class MemberService {
     @Transactional
     public MemberResponseDto findById(Long id) {
 
+
+
         Member findMember = memberRepositsory.findById(id).orElseThrow(() -> {
 
             return new IllegalArgumentException("해당 멤바가 없습니다");
         });
 
         return new MemberResponseDto(findMember);
+    }
+
+    // 세션 -> MemberDto
+    @Transactional
+    public Member findSessionMember(SessionMember sessionMember) {
+
+        if (sessionMember != null) {
+            Long id = sessionMember.getId();
+            Member member = memberRepositsory.findById(id).orElseThrow(() -> {
+                return new IllegalArgumentException("해당 세션 id의 유저가 업습니02당");
+
+            });
+
+            return member;
+        }
+
+        return null;
+    }
+
+    // ID 중복 체크
+    @Transactional
+    public boolean validId(String username) {
+        return memberRepositsory.existsByUsername(username);
     }
 }

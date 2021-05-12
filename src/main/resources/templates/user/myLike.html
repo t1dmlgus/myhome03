@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:if="http://www.w3.org/1999/xhtml">
 
-<div th:replace="fragments/common :: head('게시판폼')"></div>
+<div th:replace="fragments/common :: head('좋아요')"></div>
 <body>
 
 
@@ -16,7 +16,7 @@
         <ul>
             <li th:each="userLikeBoardDto : ${userLikeBoardDtoList}">
                 <a th:href="@{/board/detail(id=${userLikeBoardDto.boardId})}">
-                    <img th:src="|/display?fileName=${userLikeBoardDto.uploadResultDto.getImageURL()}|" th:alt="|이미지 ${userLikeBoardDto.boardId}|">
+                    <img th:src="${userLikeBoardDto.uploadResultDto.fileName}" th:alt="|이미지 ${userLikeBoardDto.boardId}|">
                 </a>
             </li>
         </ul>

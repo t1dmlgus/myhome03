@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<div th:replace="fragments/common :: head('게시판폼')"></div>
+<div th:replace="fragments/common :: head('GALLERY 수정')"></div>
 <body>
 
 
@@ -9,7 +9,7 @@
 
 <main class="container">
 
-    <h2 class="starter-template">게시판</h2>
+
     <form th:object="${board}" >
 
         <input type="hidden" id="id" th:field="*{boardId}">

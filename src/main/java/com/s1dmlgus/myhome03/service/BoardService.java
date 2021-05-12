@@ -8,11 +8,13 @@ import com.s1dmlgus.myhome03.domain.boardImage.BoardImageRepository;
 import com.s1dmlgus.myhome03.domain.reply.Reply;
 import com.s1dmlgus.myhome03.domain.reply.ReplyRepository;
 import com.s1dmlgus.myhome03.domain.user.Member;
+import com.s1dmlgus.myhome03.domain.user.MemberRepository;
 import com.s1dmlgus.myhome03.web.dto.board.BoardNewDto;
 import com.s1dmlgus.myhome03.web.dto.board.BoardRequestDto;
 import com.s1dmlgus.myhome03.web.dto.board.BoardResponseDto;
 import com.s1dmlgus.myhome03.web.dto.board.BoardSearchCondition;
 import com.s1dmlgus.myhome03.web.dto.boardImage.BoardImageDto;
+import com.s1dmlgus.myhome03.web.dto.member.SessionMember;
 import com.s1dmlgus.myhome03.web.dto.reply.ReplyRequestDto;
 import com.s1dmlgus.myhome03.web.dto.upload.UploadResultDto;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,12 +39,13 @@ import java.util.stream.Collectors;
 @Service
 public class BoardService {
 
+    private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
     private final BoardImageRepository boardImageRepository;
 
     private final ReplyService replyService;
     private final LikesService likesService;
-
+    private final BoardImageService boardImageService;
 
     List<UploadResultDto> uploadResultDtos = new ArrayList<>();
 
@@ -57,44 +61,65 @@ public class BoardService {
 
 
         return result;
-
     }
+
+
+
     // NEW Board 조회
     @Transactional
     public List<BoardNewDto> board_new(){
 
-        List<Board> boards = boardRepository.newBoard();
         List<BoardNewDto> boardNewDtos = new ArrayList<>();
+
+
+        List<Board> boards = boardRepository.newBoard();            // 상위 9개 board 검색
 
         for (Board board : boards) {
 
-            List<BoardImage> boardImages = boardImageRepository.findByBoardId(board.getId());
+            System.out.println(" board_new |0> board = " + board);
+
+            List<BoardImage> boardImages = boardImageRepository.findByBoardId(board.getId());       // 상위 9개 board의 이미지 검색
 
 
-            BoardImage boardImage = boardImages.get(0);
+            if (!boardImages.isEmpty()) {
+                for (BoardImage boardImage : boardImages) {
+                    System.out.println(" board_new |0> boardImage = " + boardImage);
+                }
 
-            UploadResultDto uploadResultDto = UploadResultDto.builder()
-                    .fileName(boardImage.getImgName())
-                    .uuid(boardImage.getUuid())
-                    .folderPath(boardImage.getPath())
-                    .build();
+                boardNewDtos.add(new BoardNewDto(board.getId(), boardImages.get(0)));
+            }
 
-            BoardNewDto boardNewDto = new BoardNewDto(board.getId(), uploadResultDto);
-            boardNewDtos.add(boardNewDto);
+
+
+
+
+
+//            BoardImage boardImage = boardImages.get(0);
+//
+//            UploadResultDto uploadResultDto = UploadResultDto.builder()
+//                    .fileName(boardImage.getImgName())
+//                    //.uuid(boardImage.getUuid())
+//                    .build();
+//
+
+//            boardNewDtos.add(boardNewDto);
 
         }
 
-        System.out.println(boardNewDtos);
+        //System.out.println(boardNewDtos);
 
 
         return boardNewDtos;
     }
 
 
+    /**
+     * 게시물 조회
+     *
+     * @param id (boardId)
+     * @return BoardResponseDto
+     */
 
-
-
-    // 게시물 조회
     @Transactional
     public BoardResponseDto findById(Long id) {
 
@@ -106,10 +131,7 @@ public class BoardService {
 
         List<BoardImage> boardImages = boardImageRepository.findByBoardId(id);
 
-
-
         for (BoardImage boardImage : boardImages) {
-
             log.info("boardImage : "+boardImage);
 
         }
@@ -124,52 +146,48 @@ public class BoardService {
     }
 
 
+
+
+
+
+
+
     // 등록
     @Transactional
     public void saveBoard(BoardRequestDto boardRequestDto, PrincipalDetails userDetails) {
 
 
-        System.out.println("userDetails = " + userDetails.getUser());
+        System.out.println("userDetails.getSessionMember().getUsername() = " + userDetails.getSessionMember().getUsername());
 
-        // 세션
-        Member user = userDetails.getUser();
+        // 세션 Dto
+        SessionMember user = userDetails.getSessionMember();
 
+        Member member = memberRepository.findById(user.getId()).orElseThrow(() -> {
+            return new IllegalArgumentException("해당 세션에 해당하는 유저가 없습니02다");
+        });
+
+
+        System.out.println("member멤바 = " + member);
+        
         // 게시물
-        Board board = boardRequestDto.toEntity(user);
+        Board board = boardRequestDto.toEntity(member);
+
+        boardRepository.save(board);
+
+
 
         // 게시물 이미지
-        List<BoardImageDto> boardImageDtoList = boardRequestDto.getBoardImageDtoList();
+        List<String> boardImage = boardRequestDto.getBoardImage();
 
-        
-        // boardImageDtoList null 과 사이즈 0이 아니라는 검증
-        if (boardImageDtoList != null && boardImageDtoList.size() > 0){
+        for (String s : boardImage) {
+            BoardImage boardImage1 = BoardImage.builder()
+                    .imgName(s)
+                    .board(board)
+                    .build();
 
-            
-            // boardImageDtoList -> boardImageList 
-            List<BoardImage> boardImages = boardImageDtoList.stream().map(boardImageDto -> {
+            BoardImage boardImage2 = boardImageRepository.save(boardImage1);
 
-                BoardImage boardImage = BoardImage.builder()
-                        .path(boardImageDto.getPath())
-                        .imgName(boardImageDto.getImgName())
-                        .uuid(boardImageDto.getUuid())
-                        .board(board)
-                        .build();
-
-                return boardImage;
-            }).collect(Collectors.toList());
-
-            
-            // board 이미지 저장
-            for (BoardImage boardImage : boardImages) {
-                System.out.println("boardImage = " + boardImage);
-                
-                boardImageRepository.save(boardImage);
-
-            }
         }
-
-        // board 저장
-        boardRepository.save(board);
 
     }
 
@@ -204,12 +222,19 @@ public class BoardService {
         // 좋아요 선 삭제
         likesService.deleteBoardLikes(boardId);
 
-        Board board = boardRepository.findById(boardId).orElseThrow(() -> {
-            return new IllegalArgumentException(" 해당 번호의 게시글이 없습니다.");
-        });
+        // 이미지 선 삭제
+        boardImageService.deleteBoardImages(boardId);
 
-        // 비즈니스 로직[삭제]
-        boardRepository.delete(board);
+
+//        Board board = boardRepository.findById(boardId).orElseThrow(() -> {
+//            return new IllegalArgumentException(" 해당 번호의 게시글이 없습니다.");
+//        });
+//
+//        // 비즈니스 로직[삭제]
+//        boardRepository.delete(board);
+
+        // 리펙토링
+        boardRepository.deleteById(boardId);
 
     }
 

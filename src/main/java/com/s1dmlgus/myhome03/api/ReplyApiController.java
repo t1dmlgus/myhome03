@@ -2,6 +2,8 @@ package com.s1dmlgus.myhome03.api;
 
 import com.s1dmlgus.myhome03.config.auth.PrincipalDetails;
 import com.s1dmlgus.myhome03.domain.reply.ReplyRepository;
+import com.s1dmlgus.myhome03.domain.user.Member;
+import com.s1dmlgus.myhome03.service.MemberService;
 import com.s1dmlgus.myhome03.service.ReplyService;
 import com.s1dmlgus.myhome03.web.dto.ResponseDto;
 import com.s1dmlgus.myhome03.web.dto.reply.ReplyDeleteRequestDto;
@@ -23,21 +25,22 @@ import javax.validation.Valid;
 public class ReplyApiController {
 
     public final ReplyService replyService;
-
+    public final MemberService memberService;
 
     // 댓글 등록
     @PostMapping("/api/v1/reply")
-    public ResponseDto<ReplyResponseDto> save(@Valid @RequestBody ReplyRequestDto replyRequestDto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails userDetails) {
+    public ResponseDto<ReplyResponseDto> save(@Valid @RequestBody ReplyRequestDto replyRequestDto, BindingResult bindingResult) {
+
+        System.out.println("replyRequestDto = " + replyRequestDto);
 
 
-        /* 핵심기능 */
-
-        Long boardId = replyRequestDto.getBoardId();
-        ReplyResponseDto replyResponseDto = replyService.saveReply(boardId, replyRequestDto, userDetails);
+        // 비즈니스 로직
+        ReplyResponseDto replyResponseDto = replyService.saveReply(replyRequestDto);
 
         System.out.println("replyResponseDto = " + replyResponseDto);
 
         return new ResponseDto<>(HttpStatus.OK.value(),replyResponseDto);
+//        return null;
     }
 
     // 댓글 삭제

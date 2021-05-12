@@ -8,4 +8,6 @@ public interface BoardImageRepository extends JpaRepository<BoardImage, Long> {
 
 
     List<BoardImage> findByBoardId(Long id);
+
+    void deleteByBoardId(Long id);
 }

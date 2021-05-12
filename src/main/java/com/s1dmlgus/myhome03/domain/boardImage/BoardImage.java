@@ -22,9 +22,9 @@ public class BoardImage extends BaseTimeEntity {
     @Column(name="boardImage_id")
     private Long iNum;
 
-    private String uuid;
-
     private String imgName;
+
+    private String uuid;
 
     private String path;
 
@@ -33,4 +33,10 @@ public class BoardImage extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Board board;
 
+
+    @Builder
+    public BoardImage(String imgName, Board board) {
+        this.imgName = imgName;
+        this.board = board;
+    }
 }

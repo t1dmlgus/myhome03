@@ -7,6 +7,7 @@ import com.s1dmlgus.myhome03.service.BoardService;
 import com.s1dmlgus.myhome03.service.LikesService;
 import com.s1dmlgus.myhome03.web.dto.board.BoardResponseDto;
 import com.s1dmlgus.myhome03.web.dto.member.MemberResponseDto;
+import com.s1dmlgus.myhome03.web.dto.member.SessionMember;
 import com.s1dmlgus.myhome03.web.dto.upload.UploadResultDto;
 import com.s1dmlgus.myhome03.web.dto.upload.UserLikeBoardDto;
 import lombok.RequiredArgsConstructor;
@@ -101,15 +102,23 @@ public class UserController {
         List<UserLikeBoardDto> userLikeBoardDtoList = new ArrayList<>();    // userLikeBoardDto -> 유저가 좋아하는 게시물DTO 생성
 
 
-        Member user = userDetails.getUser();
-        Long userId = userDetails.getUser().getId();        // 세션 유저
+        Long userId = userDetails.getSessionMember().getId();
 
+        try{
+            SessionMember user = userDetails.getSessionMember();
 
-        model.addAttribute("user", user);
+            model.addAttribute("user", user);
+
+            System.out.println("sessionMember = " + user);
+            System.out.println("sessionMember.getUsername = " + user.getUsername());
+
+        }catch (NullPointerException e){
+            log.info("NullPointerException = "+e);
+
+        }
 
 
         memberResponseDto = likesService.userLikes(userId);
-
         log.info("memberResponseDto = " + memberResponseDto);
 
 
@@ -132,6 +141,8 @@ public class UserController {
 
             }
             log.info("userLikeBoardDtoList : " + userLikeBoardDtoList);
+            log.info("userLikeBoardDtoLis232323t : " + userLikeBoardDtoList.get(0).getUploadResultDto().getFileName());
+
 
         }
         model.addAttribute("userLikeBoardDtoList", userLikeBoardDtoList);

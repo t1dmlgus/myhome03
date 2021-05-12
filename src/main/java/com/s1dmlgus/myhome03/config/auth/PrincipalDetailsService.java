@@ -2,6 +2,7 @@ package com.s1dmlgus.myhome03.config.auth;
 
 import com.s1dmlgus.myhome03.domain.user.Member;
 import com.s1dmlgus.myhome03.domain.user.MemberRepository;
+import com.s1dmlgus.myhome03.web.dto.member.SessionMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,16 +27,19 @@ public class PrincipalDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        System.out.println("username131 = " + username);
+        System.out.println("username = " + username);
+
         Member userEntity = memberRepository.findByUsername(username);
 
+        System.out.println("userEntity = " + userEntity);
+
         if (userEntity != null) {
-            return new PrincipalDetails(userEntity);
+            return new PrincipalDetails(new SessionMember(userEntity));
         }
 
         return null;
 
-        // PrincipalDetails(userEntity) 생성되서 리턴될 때 session(내부 Authentication (내부 UserDetails)) 형성된다.
+        // PrincipalDetails(userEntity) 생성되서 리턴될 때 -> session(내부 Authentication (내부 UserDetails)) 형성된다.
 
     }
 

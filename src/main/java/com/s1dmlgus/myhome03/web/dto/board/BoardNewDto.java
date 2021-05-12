@@ -1,5 +1,6 @@
 package com.s1dmlgus.myhome03.web.dto.board;
 
+import com.s1dmlgus.myhome03.domain.boardImage.BoardImage;
 import com.s1dmlgus.myhome03.web.dto.upload.UploadResultDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +16,6 @@ public class BoardNewDto {
 
     private Long boardId;
 
-    private UploadResultDto uploadResultDto;
+    private BoardImage boardImage;
 
 }

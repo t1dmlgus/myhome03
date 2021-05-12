@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +19,11 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Member extends BaseTimeEntity {
+public class Member extends BaseTimeEntity{
 
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
     private String username;
@@ -53,7 +54,6 @@ public class Member extends BaseTimeEntity {
 
 
     @Builder
-
     public Member(String username, String password, String email, Role role, int age, String provider, String providerId) {
         this.username = username;
         this.password = password;

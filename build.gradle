@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'com.s1dmlgus'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2'
 sourceCompatibility = '11'
 
 configurations {
@@ -28,18 +28,22 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-
-    implementation 'org.projectlombok:lombok:1.18.16'
-
-
-
-    compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-	//runtimeOnly 'mysql:mysql-connector-java'
-	runtimeOnly 'com.h2database:h2'
+	compile 'org.springframework.session:spring-session-jdbc'
+
+
 
 	annotationProcessor 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok'
+
+
+
+	runtimeOnly 'com.h2database:h2'
+	implementation 'org.mariadb.jdbc:mariadb-java-client'
+
+
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	//querydsl 추가
@@ -47,6 +51,10 @@ dependencies {
 
 	//thumbnail 추가
 	compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.12'
+
+	// AWS S3
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
+
 
 }
 

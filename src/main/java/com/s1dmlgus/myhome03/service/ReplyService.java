@@ -7,7 +7,9 @@ import com.s1dmlgus.myhome03.domain.board.BoardRepository;
 import com.s1dmlgus.myhome03.domain.reply.Reply;
 import com.s1dmlgus.myhome03.domain.reply.ReplyRepository;
 import com.s1dmlgus.myhome03.domain.user.Member;
+import com.s1dmlgus.myhome03.domain.user.MemberRepository;
 import com.s1dmlgus.myhome03.web.dto.board.BoardResponseDto;
+import com.s1dmlgus.myhome03.web.dto.member.SessionMember;
 import com.s1dmlgus.myhome03.web.dto.reply.ReplyRequestDto;
 import com.s1dmlgus.myhome03.web.dto.reply.ReplyResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -25,24 +27,25 @@ public class ReplyService {
 
     private final ReplyRepository replyRepository;
     private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
 
     // 댓글 등록
     @Transactional
-    public ReplyResponseDto saveReply(Long id, ReplyRequestDto replyRequestDto, PrincipalDetails userDetails){
-
-
-        //세션 유저
-        Member user = userDetails.getUser();
+    public ReplyResponseDto saveReply(ReplyRequestDto replyRequestDto){
 
         // 게시물
-        Board board = boardRepository.findById(id).orElseThrow(() -> {
+        Board board = boardRepository.findById(replyRequestDto.getBoardId()).orElseThrow(() -> {
 
-            return new IllegalArgumentException("해당 번호의 게시물이 없스빈다");
+            return new IllegalArgumentException("해당 번호의 게시물이 없습니02다");
         });
+        // 유저
+        Member member = memberRepository.findById(replyRequestDto.getUserId()).orElseThrow(() -> {
 
-        // dto -> entity
-        Reply reply = replyRequestDto.toEntity(board, user);
-
+            return new IllegalArgumentException("해당 번호의 유저는 없숩니다");
+        });
+        
+        // dto -> 엔티티
+        Reply reply = replyRequestDto.toEntity(board, member);
 
         // 댓글 등록
         Reply save = replyRepository.save(reply);
@@ -53,8 +56,6 @@ public class ReplyService {
 
         return replyResponseDto;
     }
-
-
 
 
 
@@ -112,16 +113,17 @@ public class ReplyService {
     @Transactional
     public void deleteReplies(Long boardId) {
 
-        List<Reply> replies = replyRepository.findByBoardId(boardId);
+//        List<Reply> replies = replyRepository.findByBoardId(boardId);
+//
+//        for (Reply reply : replies) {
+//            System.out.println("reply = " + reply);
+//
+//            if (reply != null)
+//                replyRepository.delete(reply);
+//
+//        }
 
-        for (Reply reply : replies) {
-            System.out.println("reply = " + reply);
-
-            if (reply != null)
-                replyRepository.delete(reply);
-
-        }
-
+        replyRepository.deleteByBoardId(boardId);
 
     }
     

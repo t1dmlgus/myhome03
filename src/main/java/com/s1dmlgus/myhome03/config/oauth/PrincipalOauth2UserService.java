@@ -4,6 +4,7 @@ import com.s1dmlgus.myhome03.config.auth.PrincipalDetails;
 import com.s1dmlgus.myhome03.domain.user.Member;
 import com.s1dmlgus.myhome03.domain.user.MemberRepository;
 import com.s1dmlgus.myhome03.domain.user.Role;
+import com.s1dmlgus.myhome03.web.dto.member.SessionMember;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -44,16 +45,18 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         System.out.println("oAuth2User.getAttributes() = " + oAuth2User.getAttributes());
 
 
-        for (String beanDefinitionName : df.getBeanDefinitionNames()) {
-            System.out.println("name22 = " + df.getBean(beanDefinitionName).getClass().getName());
-        }
+
+//        for (String beanDefinitionName : df.getBeanDefinitionNames()) {
+//            System.out.println("name22 = " + df.getBean(beanDefinitionName).getClass().getName());
+//        }
+
 
 
         // 강제 회원가입
 
         String provider = userRequest.getClientRegistration().getRegistrationId();
         String providerId = oAuth2User.getAttribute("sub");
-        String username = provider + "_" + providerId;
+        String username = oAuth2User.getAttribute("name");
 //        String password = bCryptPasswordEncoder.encode("s1dmlgus");
         String password = "s1dmlgus";
         String email = oAuth2User.getAttribute("email");
@@ -77,7 +80,10 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         }
 
         log.info("userEntity" + userEntity);
-        return new PrincipalDetails(userEntity, oAuth2User.getAttributes());
+
+
+
+        return new PrincipalDetails(new SessionMember(userEntity), oAuth2User.getAttributes());
         //return null;
     }
 }

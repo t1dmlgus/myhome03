@@ -26,7 +26,6 @@ public class BoardResponseDto {
     private Long MemberId;
     private String MemberName;
 
-
     private List<UploadResultDto> uploadResultDtoList;
 
 
@@ -52,7 +51,6 @@ public class BoardResponseDto {
             UploadResultDto uploadResultDto = UploadResultDto.builder()
                     .fileName(boardImage.getImgName())
                     .uuid(boardImage.getUuid())
-                    .folderPath(boardImage.getPath())
                     .build();
 
             return uploadResultDto;

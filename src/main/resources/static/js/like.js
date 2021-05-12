@@ -37,8 +37,6 @@ var like ={
 
         like: function(){
 
-            alert("좋아요👍");
-
             var data = {
 
                 userId : $('#user').val(),
@@ -59,8 +57,8 @@ var like ={
 
             }).done(function(aa){
 
-                alert('좋아요 등록되었습니다');
-                alert(JSON.stringify(aa));
+                alert("좋아요❤");
+                //alert(JSON.stringify(aa));
                 console.log(aa);
         //            var t = console.log(JSON.stringify(aa));
                 console.log(aa.data);
@@ -76,16 +74,13 @@ var like ={
 
             }).fail(function(error){
 
-                alert(JSON.stringify(error));
+                //alert(JSON.stringify(error));
                 alert('좋아요 등록 에러');
             })
 
 
         },
         unlike: function(){
-
-
-            alert("좋아요 취소👍");
 
             var data = {
                         userId : $('#user').val(),
@@ -108,8 +103,8 @@ var like ={
 
             }).done(function(aa){
 
-                alert('좋아요 취소되었습니다');
-                alert(JSON.stringify(aa));
+                alert("좋아요 취소💔");
+        //        alert(JSON.stringify(aa));
                 console.log(aa);
         //            var t = console.log(JSON.stringify(aa));
         //            console.log(aa.data);
@@ -122,7 +117,7 @@ var like ={
 
             }).fail(function(error){
 
-                alert(error);
+            //    alert(error);
                 alert('좋아요 취소 에러');
 
             })

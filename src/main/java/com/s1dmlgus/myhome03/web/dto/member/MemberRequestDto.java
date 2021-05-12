@@ -15,16 +15,17 @@ import javax.validation.constraints.Size;
 public class MemberRequestDto {
 
 
-    @NotNull(message = "유저네임 키값이 없습니다.")
+
+    // @NotBlack 가 @NotNull 포함
     @NotBlank(message = "유저네임을 입력하세02요")
     @Size(max=20, message = "유저네임 길이를 초과했습니02다")
     private String username;
 
-    @NotNull(message = "비밀번호 키값이 없습니다.")
+    //@NotNull(message = "비밀번호 키값이 없습니다.")
     @NotBlank(message = "비밀번호가 없습니다")
     private String password;
 
-    @NotNull(message = "이메일이 없습니02다")
+    @NotBlank(message = "이메일이 없습니02다")
     private String email;
 
     private int age;
@@ -45,7 +46,6 @@ public class MemberRequestDto {
                 .age(age)
                 .email(email)
                 .build();
-
 
 
     }

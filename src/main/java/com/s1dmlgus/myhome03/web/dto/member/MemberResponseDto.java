@@ -35,8 +35,8 @@ public class MemberResponseDto {
     private String boardTitle;
     private String boardContent;
     private LocalDateTime boardDate;
-    private Long MemberId;
-    private String MemberName;
+//    private Long MemberId;
+//    private String MemberName;
 
 
 

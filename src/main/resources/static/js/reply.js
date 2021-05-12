@@ -3,14 +3,18 @@ var reply ={
 
     init: function(){
 
+        $("#reply_content").on('click',()=>{
+            if($('#user').val() == null){
 
+                alert("로그인이 필요한 서비스입니다.(댓글)");
+                location.href="/auth/user/loginForm";
+            }
+        }),
          $("#reply_save").on('click',()=>{
 
                 console.log(this);
                 this.replySave();
          })
-
-
 
     },
      saveReply: function(aa){
@@ -25,7 +29,7 @@ var reply ={
 
                    var str ="";
 
-                    str += "<li class='replys list-group-item d-flex justify-content-between'>"
+                    str += "<li class='replys list-group-item'>"
                     str += "<div>" + replyContent + "</div>"
                     str += "<div class='d-flex'>"
                     str += "<div class='font-italic reply_user'>"+ replyMember + "</div>"
@@ -41,7 +45,7 @@ var reply ={
     replySave: function(){
 
             var data = {
-
+                userId : $('#user').val(),
                 boardId : $('#boardId').val(),
                 content : $('#reply_content').val()
             };

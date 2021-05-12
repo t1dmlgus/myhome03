@@ -30,6 +30,13 @@ public class UserApiController {
     public ResponseDto<?> save(@Valid @RequestBody MemberRequestDto memberRequestDto, BindingResult bindingResult) {
 
 
+        // Id 중복확인
+        boolean checkId = memberService.validId(memberRequestDto.getUsername());
+        if (checkId) {
+            log.info("유저 아이디 확인 = " + checkId);
+            return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), "현재 사용중인 아이디입니다.");
+        }
+
 
         /* 핵심기능 */
 

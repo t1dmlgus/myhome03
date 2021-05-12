@@ -28,6 +28,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
     }
 
     // 전체 게시판 페이징
+
     @Override
     public Page<BoardResponseDto> searchPage(BoardSearchCondition condition, Pageable pageable) {
 
@@ -51,12 +52,10 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetchResults();
 
-
-
+        // content
         List<BoardResponseDto> content = results.getResults();
+        // total
         long total = results.getTotal();
-
-
 
         return new PageImpl<>(content, pageable, total);
 

@@ -22,7 +22,7 @@ public class LikeResponseDto {
 
 
     @Builder
-    public LikeResponseDto(Likes likes) {           // ?
+    public LikeResponseDto(Likes likes) {
         this.likeId = likes.getId();
 
 

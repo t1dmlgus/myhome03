@@ -17,6 +17,7 @@ html{-webkit-touch-callout:none;        /* 링크 메뉴 제어*/
 
 body{font-size: 1rem;color:#2b2b2b;min-width: 320px;letter-spacing: 0;
     word-wrap: break-word; word-break: keep-all;
+    height:100vh;
     }
     /* line-heigth는 그때 그때마다 넣기 */
 
@@ -70,7 +71,7 @@ p{line-height: initial;}
 #wrap{position: relative;margin: 0 auto; background-color: #;height: 100%;}
 
 /* input */
-input{font-weight: normal;color:#626262;outline:0}
+input{font-weight: normal;color:#626262;outline:0, border: none;}
 ::-ms-clear,::-ms-reveal{display: none;}
 
 

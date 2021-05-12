@@ -16,7 +16,7 @@ public class LikesRequestDto {
     private Long userId;              // 유저 id
     private Long boardId;             // 게시물 id
 
-    private int status = 0;             // 1: 좋아요, 0: default
+    private int status = 0;           // 1: 좋아요, 0: default
 
 
     public LikesRequestDto(Long userId, Long boardId) {

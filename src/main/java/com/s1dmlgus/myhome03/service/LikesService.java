@@ -81,13 +81,16 @@ public class LikesService {
     @Transactional
     public void deleteBoardLikes(Long boardId) {
 
-        List<Likes> likes = likeRepository.findByBoardId(boardId);
+//        List<Likes> likes = likeRepository.findByBoardId(boardId);
+//
+//        for (Likes like : likes) {
+//            System.out.println("like = " + like);
+//
+//            likeRepository.delete(like);
+//        }
 
-        for (Likes like : likes) {
-            System.out.println("like = " + like);
-
-            likeRepository.delete(like);
-        }
+        // 리펙토링
+        likeRepository.deleteByBoardId(boardId);
 
 
     }
@@ -105,9 +108,11 @@ public class LikesService {
         LikeSearchCondition likeCond = new LikeSearchCondition(userId, boardId);
         log.info("likeCond : "+likeCond);
 
+
         // 좋아요 dto 객체(likeId, memberId)
         LikeResponseDto likeResponseDto = likeRepository.userLike(likeCond);
         log.info("likeResponseDto : "+likeResponseDto);
+
 
         // 좋아요 카운트
         Long likeCount = likeRepository.countLike(boardId);
@@ -121,6 +126,8 @@ public class LikesService {
         if(userId != null && userId.equals(likeResponseDto.getMemberId())){
             likeResponseDto.setStatus(1);
         }
+
+
 
         log.info("likeResponseDto : "+ likeResponseDto);
 

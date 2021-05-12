@@ -1,5 +1,12 @@
-.new_board{
+body{
 
+    background: #fff;
+    height: 100vh;
+}
+nav{
+
+    position:relative;
+    z-index:1;
 }
 .new_board ul{
     margin: 0 2%;
@@ -10,13 +17,82 @@
     width:32%;
     margin:0 0 3% 1%;
 
-    over-flow: hidden;
+    overflow: hidden;
 }
 .new_board ul li a{
     display:block;
     background: gray;
 
+}
 
+
+body{
+
+    background: #fff;
+    height: 100vh;
+}
+
+
+
+/* info */
+.info{
+    position: absolute;
+    right: 0;
+    top: 16%;
+    margin:0 230px 0 0;
+    color:#000;
+    font-size: 60px;
+    z-index: 2;
+}
+.info .name{
+    margin: 0 0 200px;
+
+}
+.info .sns{
+    font-size: 20px;
+    color:#fff;
+}
+
+
+/* carousel 슬라이드 */
+.carousel{
+
+    position:absolute;
+    left:0;
+    top:0px;
+    z-index:0;
+
+
+    height: 100vh;
+    perspective: 250px;
+    /* transform: perspective(2000px) rotateX(-10deg) rotateY(0deg); */
+}
+.carousel-frame{
+
+    display: flex;
+    justify-content: center;
+    align-items:stretch;
+    width: 430px;
+    height: 550px;
+    /* background: chocolate; */
 
 
 }
+
+.carousel .carousel-item{
+        top:-195px;
+        left:-250px;
+
+        width: 480px;
+
+}
+.carousel .carousel-item.active .carousel-frame img{
+    /*box-shadow: 0px -2px 4px 5px #ccc;*/
+    background: #f7d1a8;
+    border: 7px ridge #866c33
+}
+.carousel-frame img{
+
+    object-fit: cover;
+    -webkit-box-reflect: below 2px linear-gradient(transparent, transparent, rgba(0,0,0,0.3));
+}}

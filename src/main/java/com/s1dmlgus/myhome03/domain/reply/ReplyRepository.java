@@ -10,4 +10,5 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
     public List<Reply> findByBoardId(Long id);
 
+    void deleteByBoardId(Long boardId);
 }

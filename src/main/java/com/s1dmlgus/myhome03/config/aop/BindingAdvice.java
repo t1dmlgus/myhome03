@@ -44,11 +44,8 @@ public class BindingAdvice {
 
 
         for (Object arg : args) {
-
             if (arg instanceof BindingResult){
-
                 BindingResult bindingResult = (BindingResult) arg;
-
 
 
                 /* 공통기능 */
@@ -64,10 +61,8 @@ public class BindingAdvice {
 
                     }
 
-
                     return new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), errorMap);
                 }
-
 
             }
         }

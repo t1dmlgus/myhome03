@@ -16,6 +16,7 @@ import com.s1dmlgus.myhome03.web.dto.board.BoardResponseDto;
 import com.s1dmlgus.myhome03.web.dto.board.BoardSearchCondition;
 import com.s1dmlgus.myhome03.web.dto.likes.LikeResponseDto;
 import com.s1dmlgus.myhome03.web.dto.member.MemberResponseDto;
+import com.s1dmlgus.myhome03.web.dto.member.SessionMember;
 import com.s1dmlgus.myhome03.web.dto.reply.ReplyResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -35,6 +36,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -52,39 +57,29 @@ public class BoardController {
     private final LikesService likesService;
 
 
-
-    // 등록
-    @PostMapping("/register")
-    public String save(Model model, @Valid BoardRequestDto boardRequestDto, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails userDetails) {
-
-        System.out.println("boardRequestDto = " + boardRequestDto);
-
-
-        /* 핵심기능 */
-
-        System.out.println("boardRequestDto = " + boardRequestDto);
-        boardService.saveBoard(boardRequestDto, userDetails);
-
-        log.info("--------------------------11111g----------------");
-
-        //return new ResponseDto<>(HttpStatus.OK.value(),1);
-        return "redirect:/board/list";
-    }
-
-
     // 게시물 전체 조회
     @GetMapping("/list")
-    public String list(Model model, BoardSearchCondition condition, @PageableDefault(size = 10, sort = "boardId", direction = Sort.Direction.DESC) Pageable pageable, @AuthenticationPrincipal PrincipalDetails userDetails){
+    public String list(Model model, BoardSearchCondition condition, @PageableDefault(size = 10, sort = "boardId", direction = Sort.Direction.DESC) Pageable pageable,
+                       @AuthenticationPrincipal PrincipalDetails userDetails){
 
+        // 세션 확인
+        try {
+            SessionMember sessionMember = userDetails.getSessionMember();
+            Member member = memberService.findSessionMember(sessionMember);
 
-        try{
-            Member user = userDetails.getUser();
-            model.addAttribute("user", user);
+            if (member != null) {
+                model.addAttribute("user", member);
+            }
+
+            System.out.println("sessionMember = " + sessionMember);
+            System.out.println("sessionMember.getUsername = " + sessionMember.getUsername());
 
         }catch (NullPointerException e){
             log.info("NullPointerException = "+e);
 
         }
+
+
 
         // 검색조건
         condition = new BoardSearchCondition(condition.getBoardTitle(), condition.getUsername(), condition.getBoardContent());
@@ -100,22 +95,36 @@ public class BoardController {
 
         // 현재 페이지
         int page = result.getPageable().getPageNumber() + 1;
-        
+
+
+        System.out.println("page = " + page);
+
         // 총 페이지 수(= 61)
         int totalPages = result.getTotalPages();
 
+        System.out.println("totalPages = " + totalPages);
 
-
+                            // 올림
         int tempEnd = (int) (Math.ceil(page / 10.0)) * 10;
-        int start = tempEnd - 9;
-        int end = totalPages > tempEnd ? tempEnd : totalPages;
+        System.out.println("tempEnd = " + tempEnd);
+
+
+        int start = tempEnd - 9;                                    // 페이징리스트 중 첫번째 숫자
+        int end = totalPages > tempEnd ? tempEnd : totalPages;      // 페이징리스트 중 마지막 숫자
+
+
 
         boolean prev = start > 1;
         boolean next = totalPages > tempEnd;
 
-        List<Integer> pageList = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
+
+
+        List<Integer> pageList = IntStream.rangeClosed(start, end)
+                .boxed().collect(Collectors.toList());
         System.out.println("pageList = " + pageList);
 
+
+        System.out.println(" =222 " + result.getContent());
 
         model.addAttribute("boards", result);
         model.addAttribute("totalPages", totalPages);
@@ -134,46 +143,78 @@ public class BoardController {
     
     // 게시물 등록
     @GetMapping("/save")
-    public String save(){
+    public String save(Model model, @AuthenticationPrincipal PrincipalDetails userDetails){
+
+        try{
+            //Member user = userDetails.getUser();
+            SessionMember user = userDetails.getSessionMember();
+
+            model.addAttribute("user", user);
+
+            System.out.println("sessionMember = " + user);
+            System.out.println("sessionMember.getUsername = " + user.getUsername());
+
+        }catch (NullPointerException e){
+            log.info("NullPointerException = "+e);
+
+        }
 
         return "board/board_save";
     }
 
 
     // 게시물 상세정보
-    @GetMapping("/detail")                  // board_id
+    @GetMapping("/detail")
     public String detail(Model model, @RequestParam Long id, @AuthenticationPrincipal PrincipalDetails userDetails){
 
-        Long userId = null;   // 세션 userId
-        Member user = null;
+        log.info("detail -------------------------------------------");
 
-        // 세션 정보 확인
-        try{
-            user = userDetails.getUser();
-            userId = user.getId();                                          // 현재 세션 유저(userId)
+        Long boardId = id;       // boardId
+        Long sesisonId = null;   // 세션 userId
 
 
-        }catch (NullPointerException e){
+        // 세션 확인
+        try {
+            SessionMember sessionMember = userDetails.getSessionMember();
+            log.info("sessionMember :" + sessionMember);
 
-            log.info("로그인 되어있지 않습니다. "+e);
+            sesisonId = sessionMember.getId();
+
+
+            model.addAttribute("user", sessionMember);
+
+
+        } catch (NullPointerException e) {
+
+            log.info("NullPointerException = "+e);
         }
-        log.info("userId :" + userId);
 
 
-        BoardResponseDto board = boardService.findById(id);                 //  boardId
-        List<ReplyResponseDto> reply = replyService.findByBoard(id);        // boardId
-        LikeResponseDto like = likesService.findByLike(id, userId);        // boardId, userId
+        BoardResponseDto boardDto = boardService.findById(boardId);                 //  boardId
+        log.info("boardDto : " + boardDto);
 
 
-        model.addAttribute("user", user);
-        model.addAttribute("board", board);
-        model.addAttribute("reply", reply);
-        model.addAttribute("like", like);
+        LikeResponseDto likeDto = likesService.findByLike(boardId, sesisonId);        // boardId, userId
+        log.info("likeDto :" +likeDto);
+
+
+        List<ReplyResponseDto> replyDto = replyService.findByBoard(boardId);        // boardId
+        log.info("replyDto :" +replyDto);
+
+
+
+
+
+
+        //model.addAttribute("user", user);
+        model.addAttribute("board", boardDto);
+        model.addAttribute("reply", replyDto);
+        model.addAttribute("like", likeDto);
 
 
 
         return "board/board_detail";
-    }
 
+    }
 
 }

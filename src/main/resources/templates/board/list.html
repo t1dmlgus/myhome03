@@ -1,17 +1,14 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<div th:replace="fragments/common :: head('스게시판')"></div>
+<div th:replace="fragments/common :: head('갤러리')"></div>
 
+    <link rel="stylesheet" href="/css/list.css">
     <body>
 
         <div th:replace="fragments/common :: menu('board')"></div>
 
         <main role="main" class="container">
-
-            <div class="starter-template">
-                <h2>게시판</h2>
-            </div>
 
             <table class="table table-striped">
                 <thead>
@@ -31,18 +28,25 @@
                     </tr>
                 </tbody>
             </table>
+<!--            <div>-->
+<!--                <ul th:each="board : ${boards}">-->
+<!--                    <li>-->
+<!--                        <a href="#">@@@@@</a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
             <div class="text-right">
                 <a type="button" class="btn btn-primary"th:href="@{/board/save}">글쓰기</a>
             </div>
 
             <ul class="pagination justify-content-center">
-                <li class="page-item" th:if="${prev}">
+                <li class="page-item" th:if="${prev}">          <!-- 10, 20, 30... -->
                     <a class="page-link" th:href="@{/board/list?(page=${start -1})}" tabindex="-1" aria-disabled="true">Previous</a>
                 </li>
 
 
                 <li class="page-item" aria-current="page" th:each="page : ${pageList}" th:classappend="${page == boards.pageable.pageNumber + 1} ? 'active'">
-                    <a class="page-link" th:href="@{/board/list(page=${page})}">[[${page}]]<span class="sr-only"></span></a>
+                    <a class="page-link" th:href="@{/board/list?(page=${page})}">[[${page}]]<span class="sr-only"></span></a>
                 </li>
 
                 <li class="page-item" th:if="${next}">

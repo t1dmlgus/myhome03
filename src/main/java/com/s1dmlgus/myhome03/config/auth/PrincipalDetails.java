@@ -2,6 +2,7 @@ package com.s1dmlgus.myhome03.config.auth;
 
 
 import com.s1dmlgus.myhome03.domain.user.Member;
+import com.s1dmlgus.myhome03.web.dto.member.SessionMember;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -26,25 +28,24 @@ import java.util.Map;
  */
 
 
-
-
 @NoArgsConstructor
 @Data
-public class PrincipalDetails implements UserDetails, OAuth2User {
+public class PrincipalDetails implements UserDetails, OAuth2User{
 
-    private Member user;                            // 콤포지션 -> 객체를 품다
+    private Member user;
+    private SessionMember sessionMember;                            // 콤포지션 -> 객체를 품다
     private Map<String, Object> attributes;         // oauth2
 
 
 
     // 일반 사용자
-    public PrincipalDetails(Member user) {
-        this.user = user;
+    public PrincipalDetails(SessionMember user) {
+        this.sessionMember = user;
     }
 
     // OAuth 로그인
-    public PrincipalDetails(Member user, Map<String, Object> attribute) {
-        this.user = user;
+    public PrincipalDetails(SessionMember user, Map<String, Object> attribute) {
+        this.sessionMember = user;
         this.attributes = attribute;
     }
 
@@ -85,12 +86,12 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     @Override
     public String getPassword() {
 
-        return user.getPassword();
+        return sessionMember.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return sessionMember.getUsername();
     }
 
     @Override

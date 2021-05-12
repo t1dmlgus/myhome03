@@ -39,11 +39,11 @@ var login ={
                 alert('회원가입되었습니다!!😉🤦‍♂️')
                 location.href="/board/list"
             }else{
-                alert(kk.data.username) //kk.data.password ?
+                console.log(kk);
+                alert(kk.data)
             }
 
         }).fail(function(error){
-
             alert(JSON.stringify(error));
             alert('회원등록 에러');
 

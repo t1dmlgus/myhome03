@@ -5,25 +5,34 @@ var board={
         $("#btn_save").on('click',()=>{
 
             var str = "";
+            //var formData = new FormData($("#upload01")[0]);
+            var formData = new FormData($(".board_detail")[0]);
 
-            $(".uploadResult li").each(function(i,obj){     // obj -> $(".uploadResult li")
-                var target = $(obj);
 
-                console.log(target);
+            // var tt = $(uploadResultArr)[0].data;
+            //var t22 = $(".uploadResult li img").attr('src');
+            var t22 = $(".uploadResult li div img");
+            console.log(t22);
 
-                str += "<input  name='boardImageDtoList["+i+"].imgName' value='"+target.data('name') +"'>";
 
-                str += "<input  name='boardImageDtoList["+i+"].path' value='"+target.data('path')+"'>";
+            $.each(t22, function(i, obj) {
 
-                str += "<input  name='boardImageDtoList["+i+"].uuid' value='"+target.data('uuid')+"'>";
+                console.log(obj);
+                var t33 = obj.src;
+                console.log(t33);
 
+                formData.append("boardImage", t33);
             });
 
-            //태그들이 추가된 것을 확인한 후에 comment를 제거
-            $(".box").html(str);
 
-            //this.save();
-            $("form").submit();
+            console.log("_______________");
+
+            for(var value of formData.values()){
+                console.log(value);
+
+            }
+            this.save(formData);
+
         }),
 
         $("#btn_update").on('click',()=>{
@@ -38,33 +47,32 @@ var board={
 
     },
 
-    save: function(){
+    save: function(formData){
 
-        var data ={
-            title : $('#title').val(),
-            content : $('#content').val()
-        };
-
-
-        console.log(data);
+        console.log("upload 함수");
+           for(var value of formData.values()){
+               console.log(value);
+           }
 
         $.ajax({
-            type: 'POST',
             url: '/api/v1/board',
+            processData: false,
+            contentType: false,
+            data: formData,
+            type: 'POST',
             dataType: 'json',
-            contentType: 'application/json; charset = utf-8',
-            data: JSON.stringify(data)
 
-        }).done(function(vv){
+        }).done(function(result){
 
-            alert(JSON.stringify(vv));
+            console.log("result :" + result);
+            location.href = '/board/list';
 
-            if(vv.status == 200){
+            if(result.status == 200){
                 alert("글이 등록되었습니01다");
-                location.href = '/board/list';
+
             }else{
 
-                alert(vv.data)
+                alert(result.data);
             }
 
         }).fail(function(error){
@@ -144,10 +152,3 @@ var board={
 
 board.init();
 
-
-
-
-
-// $('#testbt').click(function() {
-//      $('#test').toggleClass('red');
-//   })

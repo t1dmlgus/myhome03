@@ -1,41 +1,36 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<div th:replace="fragments/common :: head('헬스프링쿠트')"></div>
+<div th:replace="fragments/common :: head('CY GALLERY')"></div>
+
+<!-- materialize  -->
+<link rel="stylesheet" href="/css/materialize.min.css">
 <link rel="stylesheet" href="/css/index.css">
+
     <body>
+     <div th:replace="fragments/common :: menu('home')"></div>
+        <main role="main" class="">
 
-        <div th:replace="fragments/common :: menu('home')"></div>
-        <main role="main" class="container">
-
-            <div class="starter-template">
-                <h1>Art musium</h1>
-                <div>NEW</div>
+            <!-- info -->
+            <div class="info">
+                <div class="profile"><img src="" alt=""></div>
+                <div class="name"></div>
+                <div class="sns"></div>
             </div>
 
-
-            <div class="new_board">
-                <ul>
-                    <li th:each="boardNew : ${boardNewDtos}">
-                        <a th:href="@{/board/detail(id=${boardNew.boardId})}">
-                            <img th:src="|/display?fileName=${boardNew.uploadResultDto.getImageURL()}|" th:alt="|이미지 ${boardNew.boardId}|">
-                        </a>
-                    </li>
-
-
-                </ul>
-
-
-
+            <!-- slide -->
+            <div class="carousel" >
+                <a class="carousel-item" th:each="boardNew : ${boardNewDtos}" th:href="@{/board/detail(id=${boardNew.boardId})}">
+                    <div class="carousel-frame">
+                        <img th:src="${boardNew.boardImage.imgName}" th:alt="|이미지 ${boardNew.boardId}|">
+                    </div>
+                </a>
 
             </div>
 
 
         </main>
         <!-- /.container -->
-
-
-
 
         <div th:replace="fragments/common :: script"></div>
     </body>

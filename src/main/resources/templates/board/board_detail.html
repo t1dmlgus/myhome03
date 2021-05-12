@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:if="http://www.w3.org/1999/xhtml">
 
-<div th:replace="fragments/common :: head('게시판폼')"></div>
+<div th:replace="fragments/common :: head('DETAIL')"></div>
 <style type="text/css">
   .red { color: #f00; }
 </style>
@@ -10,48 +10,97 @@
 
 <div th:replace="fragments/common :: menu('board')"></div>
 
-<main class="container">
-
-    <h2 class="starter-template">게시판</h2>
-
-    <div class="box">
-
-
-    </div>
-
-
-    <!-- Swiper -->
-    <div class="swiper-container">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide" th:each="boardImg : ${board.uploadResultDtoList}">
-                <div class="text-center">
-                    <img th:src="|/display?fileName=${boardImg.getImageURL()}|" alt="이미지01">
+<main  class="detail clear">
+    <div class="detail_left">
+        <!-- Swiper -->
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" th:each="boardImg : ${board.uploadResultDtoList}">
+                    <div class="frame">
+                        <img th:src="${boardImg.fileName}" alt="이미지01">
+                    </div>
                 </div>
             </div>
 
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
         </div>
-        <!-- Add Pagination -->
-        <div class="swiper-pagination"></div>
     </div>
 
-    <form th:object="${board}">
+    <!-- board info -->
+    <div class="detail_right">
 
-        <input type="hidden" id="boardId" th:field="*{boardId}">
-        <div class="form-group">
-            <label for="title">제02목</label>                                         <!-- 게시물 유저 == 세션 유저 -->
-            <input type="text" class="form-control" id="title" th:field="*{boardTitle}" th:readonly="${user} != null ? ${!#strings.equals(user.username, board.memberName)} : ${true}">
+        <!-- 게시물 유저 == 세션 유저 -->
+        <form class="gallry_form" th:object="${board}">
+
+            <input type="hidden" id="boardId" th:field="*{boardId}">
+            <div class="form-group">
+                <label for="title"></label>
+                <input type="text" class="form-control" id="title" th:field="*{boardTitle}" th:readonly="${user} != null ? ${!#strings.equals(user.username, board.memberName)} : ${true}">
+            </div>
+            <div class="form-group">
+                <label for="content"></label>
+                <textarea class="form-control" id="content" rows="30" th:field="*{boardContent}" th:readonly="${user} != null ? ${!#strings.equals(user.username, board.memberName)} : ${true}"></textarea>
+            </div>
+        </form>
+
+
+        <!-- 현재 세션 == board 유저 -->
+        <div class="text-right form_btn" th:if="${user} != null ? ${#strings.equals(user.username, board.memberName)} : ${false}">
+
+            <button id="btn_update" class="btn btn-orange">수정</button>
+            <button id="btn_delete" class="btn btn-primary">삭제</button>
+
         </div>
-        <div class="form-group">
-            <label for="content">내02용지</label>
-            <textarea class="form-control" id="content" rows="8" th:field="*{boardContent}" th:readonly="${user} != null ? ${!#strings.equals(user.username, board.memberName)} : ${true}"></textarea>
+
+
+
+        <!-- 좋아요 -->
+        <div class="likes">
+            <button id="btn-heart" class="btn btn-heart" type="hidden" th:value="${like.likeId}">
+                <div th:classappend="${like.status} == 1 ? 'xi-heart' : 'xi-heart-o'">
+                </div>
+            </button>
+
+            <!-- 좋아요 갯수 -->
+            <div id="likeCount" type="hidden" th:value="${like.count}" th:text="${like.count} >0 ? |좋아유 ${like.count}개|"></div>
         </div>
-    </form>
-    <!-- 현재 세션 == board 유저 -->
 
-    <div class="text-right" th:if="${user} != null ? ${#strings.equals(user.username, board.memberName)} : ${false}">
 
-        <button id="btn_update" class="btn btn-orange">수정</button>
-        <button id="btn_delete" class="btn btn-primary">삭제</button>
+
+        <!-- 댓글 -->
+        <div class="card">
+            <div class="card-body">
+                <textarea id="reply_content" class="form-control" rows="1" placeholder="댓글쓰기"></textarea>
+            </div>
+            <div class="card-footer text-right">
+                <button id="reply_save" class="btn btn-primary">등록</button>
+            </div>
+        </div>
+        <br/>
+
+        <div class="card">
+            <div class="card-header">댓글</div>
+
+            <ul class="list-group">
+                <li class="replys list-group-item" style="display:flex; justify-content: space-between; margin: 0 21px;" th:each="reply : ${reply}">
+
+                    <input type="hidden" th:value="${reply.replyId}">
+                    <input type="hidden" th:value="${reply.replyContent}">
+
+                    <div class="reply" th:text="${reply.replyContent}">댓글 내용입니다</div>
+
+                    <div class="d-flex">
+                        <div class="font-italic reply_user" th:text="${reply.memberName}"> 작성자: sts &nbsp;</div>
+                        <div th:if="${user} != null? ${#strings.equals(user.username, reply.memberName)} : ${false}">
+                            <button th:onclick="|reply.replyDelete( ${reply.replyId} )|" class="badge">삭제</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
 
     </div>
 
@@ -61,51 +110,6 @@
 
     <!--    <span>유저 아이디</span>-->
     <!--    <div th:text="${user.id}"></div>-->
-
-    <!-- 좋아요 -->
-    <div class="">
-        <button id="btn-heart" class="btn btn-heart" type="hidden" th:value="${like.likeId}">
-            <div th:classappend="${like.status} == 1 ? 'xi-heart' : 'xi-heart-o'">
-            </div>
-        </button>
-        <!-- 좋아요 갯수 -->
-
-        <div id="likeCount" type="hidden" th:value="${like.count}" th:text="${like.count} >0 ? |좋아유 ${like.count}개|"></div>
-    </div>
-
-    <div class="card">
-        <div class="card-body">
-            <textarea id="reply_content" class="form-control" rows="1"></textarea>
-        </div>
-        <div class="card-footer text-right">
-            <button id="reply_save" class="btn btn-primary">등록</button>
-        </div>
-    </div>
-    <br/>
-
-    <div class="card">
-        <div class="card-header">댓글리스트</div>
-
-        <ul class="list-group">
-            <li class="replys list-group-item d-flex justify-content-between" th:each="reply : ${reply}">
-
-                <input type="hidden" th:value="${reply.replyId}">
-                <input type="hidden" th:value="${reply.replyContent}">
-
-                <div class="reply" th:text="${reply.replyContent}">댓글 내용입니다</div>
-
-                <div class="d-flex">
-                    <div class="font-italic reply_user" th:text="${reply.memberName}"> 작성자: sts &nbsp;</div>
-                    <div th:if="${user} != null? ${#strings.equals(user.username, reply.memberName)} : ${false}">
-                        <button th:onclick="|reply.replyDelete( ${reply.replyId} )|" class="badge">삭제</button>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-
-
-
 
 
 </main><!-- /.container -->

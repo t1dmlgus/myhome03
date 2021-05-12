@@ -1,11 +1,9 @@
 .btn-heart{
     border: none; background:#fff;
-
 }
 
 .xi-heart{
     color:red;
-
 }
 
 #likeCount{
@@ -16,7 +14,6 @@
     width: 100%;
     background-color: #fff;
     margin-top: 10px;
-
 }
 
 .uploadResult ul {
@@ -42,5 +39,165 @@
     width: 100px;
 }
 
+nav .nav-wrapper{
+
+    /*background-image: linear-gradient(45deg, rgba(254, 246, 210, 0.53) 0%, rgba(254, 246, 210, 0.53) 14.286%,rgba(221, 240, 216, 0.53) 14.286%, rgba(221, 240, 216, 0.53) 28.572%,rgba(188, 233, 223, 0.53) 28.572%, rgba(188, 233, 223, 0.53) 42.858%,rgba(156, 227, 229, 0.53) 42.858%, rgba(156, 227, 229, 0.53) 57.144%,rgba(123, 220, 235, 0.53) 57.144%, rgba(123, 220, 235, 0.53) 71.42999999999999%,rgba(90, 214, 242, 0.53) 71.43%, rgba(90, 214, 242, 0.53) 85.71600000000001%,rgba(57, 207, 248, 0.53) 85.716%, rgba(57, 207, 248, 0.53) 100.002%),linear-gradient(135deg, rgb(246, 99, 200) 0%, rgb(246, 99, 200) 12.5%,rgb(223, 98, 196) 12.5%, rgb(223, 98, 196) 25%,rgb(199, 97, 192) 25%, rgb(199, 97, 192) 37.5%,rgb(176, 96, 188) 37.5%, rgb(176, 96, 188) 50%,rgb(152, 95, 184) 50%, rgb(152, 95, 184) 62.5%,rgb(129, 94, 180) 62.5%, rgb(129, 94, 180) 75%,rgb(105, 93, 176) 75%, rgb(105, 93, 176) 87.5%,rgb(82, 92, 172) 87.5%, rgb(82, 92, 172) 100%);*/
+    background-image: linear-gradient(90deg, rgba(125, 125, 125, 0) 0%, rgba(125, 125, 125, 0) 7%,rgba(194, 194, 194, 0) 7%, rgba(194, 194, 194, 0) 29%,rgba(124, 124, 124, 0) 29%, rgba(124, 124, 124, 0) 57%,rgba(237, 237, 237, 0) 57%, rgba(237, 237, 237, 0) 59%,rgba(110, 110, 110, 0) 59%, rgba(110, 110, 110, 0) 100%),linear-gradient(90deg, rgba(6, 6, 6, 0.01) 0%, rgba(6, 6, 6, 0.01) 20%,rgba(210, 210, 210, 0.01) 20%, rgba(210, 210, 210, 0.01) 64%,rgba(10, 10, 10, 0.01) 64%, rgba(10, 10, 10, 0.01) 82%,rgba(72, 72, 72, 0.01) 82%, rgba(72, 72, 72, 0.01) 88%,rgba(127, 127, 127, 0.01) 88%, rgba(127, 127, 127, 0.01) 100%),linear-gradient(90deg, rgba(4, 4, 4, 0.06) 0%, rgba(4, 4, 4, 0.06) 56%,rgba(6, 6, 6, 0.06) 56%, rgba(6, 6, 6, 0.06) 65%,rgba(110, 110, 110, 0.06) 65%, rgba(110, 110, 110, 0.06) 83%,rgba(136, 136, 136, 0.06) 83%, rgba(136, 136, 136, 0.06) 100%),linear-gradient(349deg, rgba(137, 137, 137, 0.02) 0%, rgba(137, 137, 137, 0.02) 43%,rgba(112, 112, 112, 0.02) 43%, rgba(112, 112, 112, 0.02) 100%),linear-gradient(47deg, rgba(184, 184, 184, 0.06) 0%, rgba(184, 184, 184, 0.06) 36%,rgba(32, 32, 32, 0.06) 36%, rgba(32, 32, 32, 0.06) 100%),linear-gradient(83deg, rgba(222, 222, 222, 0.07) 0%, rgba(222, 222, 222, 0.07) 98%,rgba(143, 143, 143, 0.07) 98%, rgba(143, 143, 143, 0.07) 100%),repeating-linear-gradient(0deg, rgba(244, 244, 244, 0.08) 0px, rgba(244, 244, 244, 0.08) 72px,rgba(155, 155, 155, 0.08) 72px, rgba(155, 155, 155, 0.08) 179px,rgba(102, 102, 102, 0.08) 179px, rgba(102, 102, 102, 0.08) 477px,rgba(133, 133, 133, 0.08) 477px, rgba(133, 133, 133, 0.08) 580px,rgba(83, 83, 83, 0.08) 580px, rgba(83, 83, 83, 0.08) 614px),repeating-linear-gradient(135deg, rgba(115, 115, 115, 0.03) 0px, rgba(115, 115, 115, 0.03) 266px,rgba(99, 99, 99, 0.03) 266px, rgba(99, 99, 99, 0.03) 273px,rgba(115, 115, 115, 0.03) 273px, rgba(115, 115, 115, 0.03) 351px,rgba(229, 229, 229, 0.03) 351px, rgba(229, 229, 229, 0.03) 439px),repeating-linear-gradient(45deg, rgba(72, 72, 72, 0.01) 0px, rgba(72, 72, 72, 0.01) 232px,rgba(65, 65, 65, 0.01) 232px, rgba(65, 65, 65, 0.01) 345px,rgba(140, 140, 140, 0.01) 345px, rgba(140, 140, 140, 0.01) 348px,rgba(26, 26, 26, 0.01) 348px, rgba(26, 26, 26, 0.01) 547px),repeating-linear-gradient(45deg, rgba(68, 68, 68, 0.05) 0px, rgba(68, 68, 68, 0.05) 115px,rgba(182, 182, 182, 0.05) 115px, rgba(182, 182, 182, 0.05) 246px,rgba(14, 14, 14, 0.05) 246px, rgba(14, 14, 14, 0.05) 272px,rgba(80, 80, 80, 0.05) 272px, rgba(80, 80, 80, 0.05) 298px,rgba(37, 37, 37, 0.05) 298px, rgba(37, 37, 37, 0.05) 434px),repeating-linear-gradient(135deg, rgba(46, 46, 46, 0.03) 0px, rgba(46, 46, 46, 0.03) 107px,rgba(169, 169, 169, 0.03) 107px, rgba(169, 169, 169, 0.03) 182px,rgba(71, 71, 71, 0.03) 182px, rgba(71, 71, 71, 0.03) 321px,rgba(182, 182, 182, 0.03) 321px, rgba(182, 182, 182, 0.03) 359px),linear-gradient(90deg, #084da4 0%,#01aeb6 100%);
+}
+.container{
+
+    margin: 0 auto !important;
+    min-width: 1300px !important;
+}
+.detail{
+}
+.detail> div{
+    float: left;
+}
+.detail> div.detail_left{
+    width: 60%
+}
+.detail> div.detail_right{
+    width: 35%
+}
+.swiper-container .swiper-wrapper{
+        height: 85vh;
+}
+
+body{
+    min-width: 1300px;
+    /* background-image: linear-gradient(to right top, #cbc0c6, #dbc8cb, #e9d0cc, #f2dbcd, #f5e7cf, #f1edd2, #ebf3d7, #e4f9df, #dcf8e4, #d6f6e8, #d2f4ed, #d0f2f0); */
+}
+
+.swiper-slide{
+
+    opacity: 0 !important;
+}
+.swiper-slide-active{
+
+    opacity: 1 !important;
+}
+
+.swiper-slide .frame{
+    display: flex;
+     justify-content: center;
+     align-items: center;
+     height: inherit;
+
+     box-sizing: border-box;
+
+}
+
+.swiper-slide .frame img{
+    display: block;
+    max-width: 100%;
+    width:500px;
+    position: relative;
+    box-shadow: 0 20px 15px #332420;
+}
 
 
+.swiper-container-horizontal >
+.swiper-pagination-bullets.swiper-pagination-bullets-dynamic{
+    bottom: 50px;
+}
+
+
+
+/* gallery-info */
+.detail_right{
+    padding: 0px 5% 0 0;
+
+}
+
+.gallry_form >.form-group:nth-child(2){
+
+    font-size: 23px;
+    margin:80px 0 -25px;
+
+}
+.gallry_form >.form-group:nth-child(2) .form-control{
+
+   border:none;
+   color:#000;
+   font-weight:700;
+   font-size:30px;
+   margin:60px 0 35px 0;
+
+}
+.gallry_form >.form-group:nth-child(3){}
+.gallry_form >.form-group:nth-child(3) .form-control{
+
+    height:200px;
+    border:none;
+    background:none;
+    color:#000;
+    font-size:20px;
+
+}
+
+.form_btn{
+    margin: 150px 0 0;
+    width: 630px;
+}
+
+
+/* 좋아요 */
+.likes{
+
+    margin: 50px 0 25px;
+    padding: 0 0 15px;
+    border-bottom: 1px solid #ccc;
+
+}
+
+.likes .btn-heart{
+    display: inline-block;
+}
+
+.likes .btn_heart_Count{
+
+    display: inline-block;
+}
+
+/* 댓글 */
+.card{
+    box-shadow: none !important;
+
+
+
+}
+.card .card-body{
+    border: 1px solid #ccc;
+    border-radius:2%;
+    margin: 0px 0 7px;
+}
+.card .card-footer{
+    text-align: right;
+
+}
+.card .card-header{
+    margin: 0 20px 7px;
+    font-weight:bold;
+    font-size:16px;
+
+}
+.card .list-group{
+    overflow-y:auto; overflow-x:hidden; width:100%; height: 160px;
+}
+
+
+.card .list-group li.replys{
+
+    margin: 0px 21px;
+    padding: 16px 0 11px;
+    border-bottom: 1px solid #ccc;
+}
+
+.card .list-group .d-flex{
+   display:flex;
+
+}
+.card .list-group .d-flex >div{
+    margin: 0 20px 0;
+}
